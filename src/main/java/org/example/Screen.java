@@ -3,22 +3,21 @@ package org.example;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
 import java.util.ArrayList;
 
-public class GameBoard {
+public class Screen {
     private static final JLabel LABEL = new JLabel();
     private static final JLabel TEXT1 = new JLabel();
     private static final JLabel TEXT2 = new JLabel();
     private static final JTextField INPUT = new JTextField(10);
     private static final JFrame SYSTEM = new JFrame("");
-    static final Charatcher[] ALL_CHARACTERS = {};
-    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-    GraphicsDevice gd = ge.getDefaultScreenDevice();
-    DisplayMode dm = gd.getDisplayMode();
+    private static final ArrayList<JLabel> SCREEN_ELEMENTS = new ArrayList<>();
+    static final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    static final GraphicsDevice gd = ge.getDefaultScreenDevice();
+    static final DisplayMode dm = gd.getDisplayMode();
 
 
-    public GameBoard() {
+    public static void init() {
 
         //text 1 2 setup
 
@@ -43,7 +42,16 @@ public class GameBoard {
 
         SYSTEM.pack();
     }
-
+    public static void addElement(JLabel label) {
+        SCREEN_ELEMENTS.add(label);
+        SYSTEM.add(label);
+        SYSTEM.pack();
+    }
+    public static void removeElement(JLabel label) {
+        SCREEN_ELEMENTS.remove(label);
+        SYSTEM.remove(label);
+        SYSTEM.pack();
+    }
 
     public static void sPrintln(String str) {
         INPUT.setText(" ");
@@ -54,19 +62,8 @@ public class GameBoard {
         INPUT.setEditable(false);
         SYSTEM.requestFocusInWindow();
     }
+    public static void setBackground(String path) {
 
-
-
-
-    public static int formatInput(String str) {
-        if (str.length() > 1) {
-            String input = str.charAt(str.length() - 1) + "";
-            String confirm = str.charAt(str.length() - 2) + "";
-            if (strIsInt(confirm) && input.equals(confirm)) {
-                return Integer.parseInt(confirm);
-            }
-        }
-        return 0;
     }
 
     public static boolean strIsInt(String string) {
@@ -76,9 +73,6 @@ public class GameBoard {
         } catch (NumberFormatException e) {
             return false;
         }
-    }
-    public static void gameLoop() {
-
     }
     public static ImageIcon createImageIcon(int width, int height) {
         // Create a buffered image with specified width and height

@@ -1,5 +1,7 @@
 package org.example;
 
+import javax.swing.*;
+
 public class Charatcher {
     private String name;
     private String path;
@@ -9,7 +11,13 @@ public class Charatcher {
     private int balance;
     private Job job;
     private boolean isDead;
-
+    private CharacterStill characterStill;
+    static final Job[] JOBS = {
+            new Job("Fish market",new Game[]{},)
+    }
+    static final Charatcher[] ALL_CHARACTERS = {
+            new Charatcher("Carina","src/main/Charachters/Carina",new double[] {1,1,1.5,0.5,1},)
+    };
     public Charatcher(String n, String folder, double[] s, Job j) {
         name = n;
         path = folder;
@@ -20,6 +28,13 @@ public class Charatcher {
         balance = 100;
         isDead = false;
 
+    }
+    public void createCharacterStill(int x,int y,int h,int w) {
+        characterStill = new CharacterStill(x,y,h,w,this);
+    }
+
+    public CharacterStill getCharacterStill() {
+        return characterStill;
     }
 
     public void runJob() {
@@ -52,9 +67,20 @@ public class Charatcher {
     public int getBalance() {
         return balance;
     }
+    public ImageIcon getExpression(String expression) {
+        return new ImageIcon(path+""+expression);
+    }
+
+    public String getCurrentExpression() {
+        return expression;
+    }
 
     public void setBalance(int balance) {
         this.balance = balance;
+    }
+
+    public void setDead(boolean dead) {
+        isDead = dead;
     }
 
     public void addBalance(int add) {

@@ -1,8 +1,13 @@
 package org.example;
-public class Main {
-    public static void main(String[] args) {
-        new GameBoard();
 
+import java.util.Date;
+
+public class Main {
+    public static Date currentDate = new Date(2025,2,17);
+    public static int daysSurvived = 0;
+
+    public static void main(String[] args) {
+        Screen.init();
     }
     public static int random(int low, int high) {
         int range = high - low + 1;
