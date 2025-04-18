@@ -13,10 +13,11 @@ public class Charatcher {
     private boolean isDead;
     private CharacterStill characterStill;
     static final Job[] JOBS = {
-            new Job("Fish market",new Game[]{},)
-    }
+            new Job("Getting up",new Game[]{},0,0,3,0),
+            new Job("Fish market",new Game[]{},130,0,5,7)
+    };
     static final Charatcher[] ALL_CHARACTERS = {
-            new Charatcher("Carina","src/main/Charachters/Carina",new double[] {1,1,1.5,0.5,1},)
+            new Charatcher("Carina","src/main/Charachters/Carina",new double[] {1,1,1.5,0.5,1},JOBS[1])
     };
     public Charatcher(String n, String folder, double[] s, Job j) {
         name = n;
@@ -27,7 +28,6 @@ public class Charatcher {
         expression = "hidden";
         balance = 100;
         isDead = false;
-
     }
     public void createCharacterStill(int x,int y,int h,int w) {
         characterStill = new CharacterStill(x,y,h,w,this);
@@ -73,6 +73,10 @@ public class Charatcher {
 
     public String getCurrentExpression() {
         return expression;
+    }
+
+    public boolean isDead() {
+        return isDead;
     }
 
     public void setBalance(int balance) {
