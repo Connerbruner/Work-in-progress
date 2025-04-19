@@ -15,6 +15,8 @@ public class Screen {
     static final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
     static final GraphicsDevice gd = ge.getDefaultScreenDevice();
     static final DisplayMode dm = gd.getDisplayMode();
+    static final int SCREEN_HEIGHT = dm.getHeight();
+    static final int SCREEN_WIDTH = dm.getHeight();
 
 
     public static void init() {
@@ -34,23 +36,20 @@ public class Screen {
 
         //final setup
         INPUT.setEditable(false);
-        LABEL.setIcon(createImageIcon(dm.getWidth(),dm.getHeight()));
+        LABEL.setIcon(createBackground(dm.getWidth(),dm.getHeight()));
         SYSTEM.add(INPUT);
         SYSTEM.add(LABEL);
         SYSTEM.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         SYSTEM.setVisible(true);
-
         SYSTEM.pack();
     }
     public static void addElement(JLabel label) {
         SCREEN_ELEMENTS.add(label);
         SYSTEM.add(label);
-        SYSTEM.pack();
     }
     public static void removeElement(JLabel label) {
         SCREEN_ELEMENTS.remove(label);
         SYSTEM.remove(label);
-        SYSTEM.pack();
     }
 
     public static void sPrintln(String str) {
@@ -74,15 +73,22 @@ public class Screen {
             return false;
         }
     }
-    public static ImageIcon createImageIcon(int width, int height) {
+    public static ImageIcon createBackground(int width, int height) {
         // Create a buffered image with specified width and height
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics g = image.getGraphics();
-        g.setColor(Color.GRAY);
+        g.setColor(Color.BLACK);
         g.fillRect(0, 0, width, height);
+        g.setColor(Color.GRAY);
+        int squareWidth = (height*4)/3;
+        g.fillRect((width - squareWidth) / 2, 0, squareWidth, height);
         g.dispose();
         return new ImageIcon(image);
     }
+    public static ImageIcon scaleImage(int w,int h,ImageIcon i) {
+        return new ImageIcon( i.getImage().getScaledInstance(w,h,Image.SCALE_SMOOTH));
+    }
+
 
 
 

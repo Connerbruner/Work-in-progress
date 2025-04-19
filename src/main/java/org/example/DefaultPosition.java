@@ -1,11 +1,11 @@
 package org.example;
 
 public enum DefaultPosition {
-    TOP_LEFT(0, 0,100,100),
-    TOP_RIGHT(0, 100,100,100),
-    BOTTOM_LEFT(100, 0,100,100),
-    BOTTOM_RIGHT(100, 100,100,100),
-    CENTER(50, 50,100,100);
+    TOP_LEFT(0, 0,1100,1562),
+    TOP_RIGHT(0, 100,1100,1562),
+    BOTTOM_LEFT(100, 0,1100,1562),
+    BOTTOM_RIGHT(100, 100,1100,1562),
+    CENTER(Screen.SCREEN_WIDTH/2,Screen.SCREEN_HEIGHT/2,1100/2,1562/2);
 
     private final int x;
     private final int y;
@@ -34,10 +34,5 @@ public enum DefaultPosition {
 
     public int getW() {
         return w;
-    }
-
-    @Override
-    public String toString() {
-        return "Position: (" + x + ", " + y + ")";
     }
 }

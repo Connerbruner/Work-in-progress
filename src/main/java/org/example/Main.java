@@ -8,6 +8,13 @@ public class Main {
 
     public static void main(String[] args) {
         Screen.init();
+        Character carina = Character.ALL_CHARACTERS[0];
+        carina.createCharacterStill(DefaultPosition.CENTER);
+        carina.getCharacterStill().changeExpression("default");
+        System.out.println(carina.getExpression("default"));
+
+        carina.getCharacterStill().setVisible(true);
+
     }
     public static int random(int low, int high) {
         int range = high - low + 1;
