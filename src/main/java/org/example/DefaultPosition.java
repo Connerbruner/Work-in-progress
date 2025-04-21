@@ -1,11 +1,13 @@
 package org.example;
 
 public enum DefaultPosition {
-    TOP_LEFT(0, 0,1100,1562),
-    TOP_RIGHT(0, 100,1100,1562),
-    BOTTOM_LEFT(100, 0,1100,1562),
-    BOTTOM_RIGHT(100, 100,1100,1562),
-    CENTER(Screen.SCREEN_WIDTH/2,Screen.SCREEN_HEIGHT/2,1100/2,1562/2);
+    RIGHT3_BOTTOM_CHARACTER(1925,475,687,976),
+    RIGHT2_BOTTOM_CHARACTER(1525,475,687,976),
+    RIGHT1_BOTTOM_CHARACTER(1225,475,687,976),
+    CENTER_BOTTOM_CHARACTER(975,475,687,976),
+    LEFT1_BOTTOM_CHARACTER(725,475,687,976),
+    LEFT2_BOTTOM_CHARACTER(525,475,687,976),
+    LEFT3_BOTTOM_CHARACTER(225,475,687,976);
 
     private final int x;
     private final int y;
@@ -13,7 +15,7 @@ public enum DefaultPosition {
     private final int w;
 
 
-    DefaultPosition(int x, int y,int h,int w) {
+    DefaultPosition(int x, int y,int w,int h) {
         this.x = x;
         this.y = y;
         this.h = h;
@@ -21,18 +23,18 @@ public enum DefaultPosition {
     }
 
     public int getX() {
-        return x;
+        return (int) (x*(Screen.USABLE_WIDTH/2560.0));
     }
 
     public int getY() {
-        return y;
+        return (int) (y*(Screen.SCREEN_HEIGHT/1440.0));
     }
 
     public int getH() {
-        return h;
+        return (int) (h*(Screen.SCREEN_HEIGHT/1440.0));
     }
 
     public int getW() {
-        return w;
+        return (int) (w*(Screen.SCREEN_HEIGHT/1440.0));
     }
 }

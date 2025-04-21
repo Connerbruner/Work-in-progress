@@ -1,6 +1,7 @@
 package org.example;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 
 public class Character {
@@ -12,13 +13,16 @@ public class Character {
     private int balance;
     private Job job;
     private boolean isDead;
-    private CharacterStill characterStill;
+    private JLabel label;
+    private Rectangle position;
+
+
     static final Job[] JOBS = {
             new Job("Getting up",new Game[]{},0,0,5,0),
             new Job("Fish market",new Game[]{},130,0,7,0)
     };
     static final Character[] ALL_CHARACTERS = {
-            new Character("Carina","src/main/Charachters/Carina/",new double[] {1,1,1.5,0.5,1},JOBS[1])
+            new Character("Carina","src/main/java/org/example/Charachters/Carina",new double[] {1,1,1.5,0.5,1},JOBS[1])
     };
     public Character(String n, String folder, double[] s, Job j) {
         name = n;
@@ -28,17 +32,11 @@ public class Character {
         stats = new int[]{100, 100, 100, 100, 100};
         balance = 100;
         isDead = false;
+        label = new JLabel();
+        position = new Rectangle();
+        Screen.addElement(label);
+        setBounds(DefaultPosition.values()[0]);
 
-    }
-    public void createCharacterStill(int x,int y,int h,int w) {
-        characterStill = new CharacterStill(x,y,h,w,this);
-    }
-    public void createCharacterStill(DefaultPosition d) {
-        characterStill = new CharacterStill(d.getX(),d.getY(),d.getH(),d.getW(),this);
-    }
-
-    public CharacterStill getCharacterStill() {
-        return characterStill;
     }
 
     public void runJob() {
@@ -50,6 +48,7 @@ public class Character {
         expression = "hidden";
         balance = 100;
         isDead = false;
+        label.setVisible(false);
     }
 
     public String getName() {
@@ -68,6 +67,11 @@ public class Character {
         return stats[i];
     }
 
+    public JLabel getLabel() {
+        return label;
+    }
+
+
     public int getBalance() {
         return balance;
     }
@@ -75,7 +79,11 @@ public class Character {
         if (new File(path+""+expression+".png").exists()) {
             throw new IllegalArgumentException(path+""+expression+".png is bad");
         }
-        return new ImageIcon(path+""+expression+".png");
+        return new ImageIcon(path+"/"+expression+".png");
+    }
+
+    public Rectangle getPosition() {
+        return position;
     }
 
     public String getCurrentExpression() {
@@ -105,6 +113,29 @@ public class Character {
     public void setExpression(String name) {
         expression = name;
     }
+    public void changeExpression(String expression) {
+        label.setIcon(Screen.scaleImage(label.getWidth(), label.getHeight(), getExpression(expression)));
+        label.getParent().repaint();
+    }
+
+    public void setVisible(boolean b) {
+        label.setVisible(b);
+        label.getParent().repaint();
+
+    }
+
+    public void setBounds(Rectangle rectangle) {
+        label.setBounds(rectangle);
+        position = rectangle;
+        label.getParent().repaint();
+
+    }
+    public void setBounds(DefaultPosition x) {
+        setBounds(new Rectangle(x.getX(),x.getY(),x.getW(),x.getH()));
+
+
+    }
+
 
 
 }
