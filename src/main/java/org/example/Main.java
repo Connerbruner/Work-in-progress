@@ -15,10 +15,7 @@ public class Main {
         carina.changeExpression("default");
         carina.setVisible(false);
         carina.setBounds(DefaultPosition.values()[0]);
-        Screen.choice("What is up",new String[] {"Test","Testing"});
-        Screen.sPrintln("Carina","This is a Test");
-        Screen.sPrintln("Carina","This is a Test");
-
+        Events.ALL_EVENTS[0].checkRun(carina);
 
     }
     public static int random(int low, int high) {

@@ -11,9 +11,10 @@ import java.util.ArrayList;
 
 public class Screen {
     static final Font VCR_FONT;
+    static final int MAX_CHAR_PER_LINE = 50;
     private static final JLabel BORDER_BACKGROUND = new JLabel();
     private static final JLabel BACKGROUND = new JLabel();
-    private static final JLabel TEXT1 = new JLabel();
+    private static final JLabel[] TEXTS = new JLabel[]{new JLabel(),new JLabel(), new JLabel(),new JLabel()};
     private static final JFrame SYSTEM = new JFrame("");
     private static final ArrayList<JButton> CHOICES = new ArrayList<>();
     private static final ArrayList<Component> SCREEN_ELEMENTS = new ArrayList<>();
@@ -43,16 +44,19 @@ public class Screen {
         SYSTEM.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         // Add TEXT1
-        TEXT1.setFont(VCR_FONT);
-        TEXT1.setHorizontalAlignment(SwingConstants.CENTER);
-        TEXT1.setBounds(0, (int) (SCREEN_HEIGHT * 0.9), USABLE_WIDTH, (int) (VCR_FONT.getSize() * 1.1));
-        TEXT1.setOpaque(true); // Make JLabel background visible
-        TEXT1.setBackground(Color.BLACK); // Background color
-        TEXT1.setForeground(Color.WHITE); // Text color
-        SYSTEM.add(TEXT1);
+        for(JLabel jLabel : TEXTS) {
+            jLabel.setFont(VCR_FONT);
+            jLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            jLabel.setBounds(0, (int) (SCREEN_HEIGHT * 0.9), USABLE_WIDTH, (int) (VCR_FONT.getSize() * 1.1));
+            jLabel.setOpaque(true); // Make JLabel background visible
+            jLabel.setBackground(Color.BLACK); // Background color
+            jLabel.setForeground(Color.WHITE); // Text color
+            SYSTEM.add(jLabel);
+        }
 
-        BACKGROUND.setBounds((SCREEN_WIDTH-USABLE_WIDTH)/2,0,USABLE_WIDTH,SCREEN_HEIGHT);
-        setBackground(false,"scars");
+
+        BACKGROUND.setBounds((SCREEN_WIDTH - USABLE_WIDTH) / 2, 0, USABLE_WIDTH, SCREEN_HEIGHT);
+        setBackground(false, "scars");
         BACKGROUND.setVisible(true);
         SYSTEM.add(BACKGROUND);
 
@@ -73,11 +77,11 @@ public class Screen {
         SYSTEM.setVisible(true); // Make the frame visible AFTER everything is configured
     }
 
-    public static void setBackground(Boolean isPhoto,String name) {
-        if(isPhoto) {
-            BACKGROUND.setIcon(scaleImage(SCREEN_WIDTH,SCREEN_HEIGHT,new ImageIcon("src/main/java/org/example/Background/Photos/"+name+".png")));
+    public static void setBackground(Boolean isPhoto, String name) {
+        if (isPhoto) {
+            BACKGROUND.setIcon(scaleImage(SCREEN_WIDTH, SCREEN_HEIGHT, new ImageIcon("src/main/java/org/example/Background/Photos/" + name + ".png")));
         } else {
-            BACKGROUND.setIcon(scaleImage(SCREEN_WIDTH,SCREEN_HEIGHT,new ImageIcon("src/main/java/org/example/Background/Handrawn/"+name+".png")));
+            BACKGROUND.setIcon(scaleImage(SCREEN_WIDTH, SCREEN_HEIGHT, new ImageIcon("src/main/java/org/example/Background/Handrawn/" + name + ".png")));
         }
     }
 
@@ -96,7 +100,9 @@ public class Screen {
 
     public static void waitTillClick() {
         mouseReleased = false;
-        while (!mouseReleased) ;
+        while (!mouseReleased) {
+            Main.wait(1);
+        }
     }
 
     public static void sPrintln(String str) {
@@ -104,12 +110,16 @@ public class Screen {
     }
 
     public static void sPrintln(String name, String str) {
+        setText("");
         Thread thread = new Thread(() -> {
-            String text = name + ": ";
-            for (char c : (str+"...").toCharArray()) {
+            String text = name;
+            if(name.length()>0) {
+                 text = name + ": ";
+            }
+            for (char c : (str + "...").toCharArray()) {
                 if (!textIsTyping) break; // Gracefully exit the loop if the thread is stopped
                 text += c;
-                setText(text); // Update UI safely on the EDT
+                setText(text);
                 Main.wait(10);
 
             }
@@ -128,14 +138,37 @@ public class Screen {
             Thread.currentThread().interrupt();
         }
     }
+
     public static void setText(String str) {
-        TEXT1.setText(str);
-        TEXT1.setBounds((USABLE_WIDTH) / 2,
-                (int) ((SCREEN_HEIGHT - (VCR_FONT.getSize() * 1.1)) / 1.1),
-                TEXT1.getPreferredSize().width + VCR_FONT.getSize(), (int) (VCR_FONT.getSize() * 1.1));
+        int lines = 0;
+        String[] string = {"","","",""};
+        String[] words = str.split(" ");
+        for(String word : words) {
+            if((string[lines]+word).length()<MAX_CHAR_PER_LINE) {
+                string[lines] += word+" ";
+            } else {
+                lines++;
+                string[lines] += word;
+
+            }
+        }
+        for(int i=0; i<string.length; i++) {
+            TEXTS[i].setText(string[i]);
+            TEXTS[i].setVisible(true);
+            TEXTS[i].setBounds(
+                    (SCREEN_WIDTH-TEXTS[i].getPreferredSize().width) / 2,
+                    (int) ((SCREEN_HEIGHT - (VCR_FONT.getSize() * 1.1)*i) / 1.1),
+                    TEXTS[i].getPreferredSize().width + VCR_FONT.getSize(),
+                    (int) (VCR_FONT.getSize() * 1.1));
+            if(TEXTS[i].getText().isEmpty()) {
+                TEXTS[i].setVisible(false);
+            }
+        }
+
+
     }
 
-    public static int choice(String text,String[] choices) {
+    public static int choice(String text, String[] choices) {
         setText(text);
         final int[] clickedIndex = {-1};
 
@@ -158,7 +191,7 @@ public class Screen {
             button.setFont(VCR_FONT);
             button.setVisible(true);
             button.setBounds(
-                    (USABLE_WIDTH) / 2,
+                    (SCREEN_WIDTH-button.getPreferredSize().width) / 2,
                     (int) ((SCREEN_HEIGHT - (VCR_FONT.getSize() * 1.1)) / 2) + ((int) (VCR_FONT.getSize() * 1.25) * i),
                     button.getPreferredSize().width + VCR_FONT.getSize(),
                     (int) (VCR_FONT.getSize() * 1.1)
@@ -229,7 +262,7 @@ public class Screen {
     }
 
     public static ImageIcon scaleImage(double scale, ImageIcon i) {
-        return scaleImage((int) (i.getIconWidth()*scale), (int) (i.getIconHeight()*scale),i);
+        return scaleImage((int) (i.getIconWidth() * scale), (int) (i.getIconHeight() * scale), i);
     }
 
     public static GraphicsDevice getHighestResolutionDisplay() {
