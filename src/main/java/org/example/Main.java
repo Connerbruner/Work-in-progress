@@ -11,11 +11,7 @@ public class Main {
     public static void main(String[] args) {
 
         Screen.init();
-        Character carina = Character.ALL_CHARACTERS[0];
-        carina.changeExpression("default");
-        carina.setVisible(false);
-        carina.setBounds(DefaultPosition.values()[0]);
-        Events.ALL_EVENTS[0].checkRun(carina);
+        Screen.titleScreen();
 
     }
     public static int random(int low, int high) {

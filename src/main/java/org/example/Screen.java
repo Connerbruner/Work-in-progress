@@ -1,6 +1,7 @@
 package org.example;
 
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -8,12 +9,16 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Screen {
     static final Font VCR_FONT;
-    static final int MAX_CHAR_PER_LINE = 50;
+    static final int MAX_CHAR_PER_LINE = 70;
     private static final JLabel BORDER_BACKGROUND = new JLabel();
     private static final JLabel BACKGROUND = new JLabel();
+    private static final JLabel TITLE_BANNER = new JLabel();
+    private static final JButton[] MENU_BUTTONS = {new JButton("Play"),new JButton("Setup"),new JButton("Special Features"),new JButton("Help")};
     private static final JLabel[] TEXTS = new JLabel[]{new JLabel(),new JLabel(), new JLabel(),new JLabel()};
     private static final JFrame SYSTEM = new JFrame("");
     private static final ArrayList<JButton> CHOICES = new ArrayList<>();
@@ -27,6 +32,7 @@ public class Screen {
     static final int USABLE_WIDTH = (PRIMARY_MONITOR_DM.getHeight() * 4) / 3;
     private static boolean mouseReleased = false;
     private static volatile boolean textIsTyping = true; // Shared flag to control the thread
+    private static volatile int menuIndex = -1;
 
     static {
         try {
@@ -51,14 +57,54 @@ public class Screen {
             jLabel.setOpaque(true); // Make JLabel background visible
             jLabel.setBackground(Color.BLACK); // Background color
             jLabel.setForeground(Color.WHITE); // Text color
+            jLabel.setVisible(false);
             SYSTEM.add(jLabel);
         }
 
+        for (int i = 0; i < MENU_BUTTONS.length; i++) {
+            JButton button = MENU_BUTTONS[i];
+            button.setFont(VCR_FONT);
+            button.setBounds(((USABLE_WIDTH/4)*(i+1))-button.getPreferredSize().width/2,(5*SCREEN_HEIGHT)/6,button.getPreferredSize().width,button.getPreferredSize().height);
+            button.setVisible(false);
+            button.setBorderPainted(false);
+            button.setFocusPainted(false);
+            button.setBackground(Color.LIGHT_GRAY);
+            button.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    button.setBackground(Color.BLACK);
+                    button.setForeground(Color.WHITE);
+                }
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    button.setBackground(Color.LIGHT_GRAY);
+                    button.setBorderPainted(false);
+                    button.setFocusPainted(false);
+                    button.setForeground(Color.BLACK);
+                    SYSTEM.getContentPane().setComponentZOrder(button, 0);
+
+                }
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    List buttons = Arrays.asList(MENU_BUTTONS);
+                    menuIndex = buttons.indexOf(button);
+                }
+            });
+            SYSTEM.add(button);
+            SYSTEM.getContentPane().setComponentZOrder(button, 0);
+
+        }
 
         BACKGROUND.setBounds((SCREEN_WIDTH - USABLE_WIDTH) / 2, 0, USABLE_WIDTH, SCREEN_HEIGHT);
-        setBackground(false, "scars");
-        BACKGROUND.setVisible(true);
+        BACKGROUND.setVisible(false);
         SYSTEM.add(BACKGROUND);
+
+        TITLE_BANNER.setIcon(scaleImage(USABLE_WIDTH,SCREEN_HEIGHT,new ImageIcon("src/main/java/org/example/Ui/title screen.png")));
+        TITLE_BANNER.setBounds((SCREEN_WIDTH-USABLE_WIDTH)/2,100,USABLE_WIDTH,SCREEN_HEIGHT);
+        TITLE_BANNER.setVisible(false);
+        SYSTEM.add(TITLE_BANNER);
+        SYSTEM.getContentPane().setComponentZOrder(TITLE_BANNER, 1);
+
 
 
         SYSTEM.addMouseListener(new MouseAdapter() {
@@ -76,13 +122,46 @@ public class Screen {
         PRIMARY_MONITOR.setFullScreenWindow(SYSTEM);
         SYSTEM.setVisible(true); // Make the frame visible AFTER everything is configured
     }
+    public static void titleScreen() {
+        boolean atTitleScreen = true;
+        TITLE_BANNER.setVisible(true);
+        for(JButton button : MENU_BUTTONS) {
+            button.setVisible(true);
+            SYSTEM.getContentPane().setComponentZOrder(button, 0);
+
+        }
+        Thread thread = new Thread(() -> {
+            File[] backgrounds = new File("src/main/java/org/example/Background/Photos").listFiles();
+            while (menuIndex==-1) {
+                String name = backgrounds[Main.random(backgrounds)].getName();
+                name = name.substring(0,name.length()-4);
+                setBackground(true, name);
+                Main.wait(Main.random(3000,10000));
+            }
+        });
+        thread.start();
+        while (menuIndex==-1) {
+            Main.wait(1);
+        }
+        System.out.println(menuIndex);
+        for(JButton button : MENU_BUTTONS) {
+            button.setVisible(false);
+        }
+        TITLE_BANNER.setVisible(false);
+
+
+
+    }
 
     public static void setBackground(Boolean isPhoto, String name) {
+        BACKGROUND.setVisible(true);
         if (isPhoto) {
             BACKGROUND.setIcon(scaleImage(SCREEN_WIDTH, SCREEN_HEIGHT, new ImageIcon("src/main/java/org/example/Background/Photos/" + name + ".png")));
         } else {
             BACKGROUND.setIcon(scaleImage(SCREEN_WIDTH, SCREEN_HEIGHT, new ImageIcon("src/main/java/org/example/Background/Handrawn/" + name + ".png")));
         }
+        SYSTEM.getContentPane().setComponentZOrder(BACKGROUND, SYSTEM.getContentPane().getComponentCount() - 2);
+
     }
 
     public static void addElement(Component component) {
@@ -148,13 +227,14 @@ public class Screen {
                 string[lines] += word+" ";
             } else {
                 lines++;
-                string[lines] += word;
+                string[lines] += word+" ";
 
             }
         }
+
         for(int i=0; i<string.length; i++) {
-            TEXTS[i].setText(string[i]);
-            TEXTS[i].setVisible(true);
+            TEXTS[string.length-i-1].setText(string[i]);
+            TEXTS[i].setVisible(false);
             TEXTS[i].setBounds(
                     (SCREEN_WIDTH-TEXTS[i].getPreferredSize().width) / 2,
                     (int) ((SCREEN_HEIGHT - (VCR_FONT.getSize() * 1.1)*i) / 1.1),
@@ -162,6 +242,9 @@ public class Screen {
                     (int) (VCR_FONT.getSize() * 1.1));
             if(TEXTS[i].getText().isEmpty()) {
                 TEXTS[i].setVisible(false);
+            } else {
+                TEXTS[i].setVisible(true);
+
             }
         }
 
