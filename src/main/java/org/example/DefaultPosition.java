@@ -1,6 +1,7 @@
 package org.example;
 
 public enum DefaultPosition {
+
     RIGHT3_BOTTOM_CHARACTER(1925,475,687,976),
     RIGHT2_BOTTOM_CHARACTER(1525,475,687,976),
     RIGHT1_BOTTOM_CHARACTER(1225,475,687,976),
@@ -23,18 +24,18 @@ public enum DefaultPosition {
     }
 
     public int getX() {
-        return (int) (x*(Screen.USABLE_WIDTH/2560.0));
+        return (int) (x*Main.SCREEN_RATIO);
     }
 
     public int getY() {
-        return (int) (y*(Screen.SCREEN_HEIGHT/1440.0));
+        return (int) (y*Main.SCREEN_RATIO);
     }
 
     public int getH() {
-        return (int) (h*(Screen.SCREEN_HEIGHT/1440.0));
+        return (int) (h*Main.SCREEN_RATIO);
     }
 
     public int getW() {
-        return (int) (w*(Screen.SCREEN_HEIGHT/1440.0));
+        return (int) (w*Main.SCREEN_RATIO);
     }
 }

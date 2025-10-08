@@ -34,8 +34,6 @@ public class Character {
         isDead = false;
         label = new JLabel();
         position = new Rectangle();
-        Screen.addElement(label);
-        setBounds(DefaultPosition.values()[0]);
 
     }
 
@@ -114,27 +112,10 @@ public class Character {
         expression = name;
     }
     public void changeExpression(String expression) {
-        label.setIcon(Screen.scaleImage(label.getWidth(), label.getHeight(), getExpression(expression)));
+        label.setIcon(Main.scaleImage(label.getWidth(), label.getHeight(), getExpression(expression)));
         label.getParent().repaint();
     }
 
-    public void setVisible(boolean b) {
-        label.setVisible(b);
-        label.getParent().repaint();
-
-    }
-
-    public void setBounds(Rectangle rectangle) {
-        label.setBounds(rectangle);
-        position = rectangle;
-        label.getParent().repaint();
-
-    }
-    public void setBounds(DefaultPosition x) {
-        setBounds(new Rectangle(x.getX(),x.getY(),x.getW(),x.getH()));
-
-
-    }
 
 
 
