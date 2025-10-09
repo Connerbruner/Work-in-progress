@@ -15,9 +15,6 @@ public class ChoiceScreen extends TextScreen {
         super(height, width, linewidth, lineCount);
     }
 
-    public ChoiceScreen(int height, int width, Runnable init, int linewidth, int lineCount) {
-        super(height, width, init, linewidth, lineCount);
-    }
 
     public Component addButton(JButton button) {
         buttons.add(button);

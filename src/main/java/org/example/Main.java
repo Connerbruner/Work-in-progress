@@ -9,6 +9,7 @@ public class Main {
     public static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     public static final double SCREEN_RATIO = ((screenSize.getWidth()/2560)+(screenSize.getHeight()/1440))/2;
     public static Phone phone = new Phone();
+    public static Screen test = new Screen(500,500);
     public static TextScreen logo = new TextScreen(200,500,50,10);
 
 
@@ -28,6 +29,13 @@ public class Main {
 
     public static void main(String[] args) {
         phone.setVisible(true);
+        System.out.println("test");
+        JButton jButton;
+        while (true) {
+            while (phone.getButtonPressedIndex()==-1);
+            System.out.println(phone.getButtonPressedIndex());
+        }
+
     }
     public static int random(int low, int high) {
         int range = high - low + 1;

@@ -14,33 +14,13 @@ public class Screen extends JFrame{
     public Screen(int height,int width) {
         super();
         setUndecorated(true);
-        JPanel contentPane = new JPanel(new BorderLayout());
-        background.setBounds(0,0,width,height/2);
-        contentPane.add(background);
-        setContentPane(contentPane);
+        setSize(width,height);
         FrameDragListener frameDragListener = new FrameDragListener(this);
         addMouseListener(frameDragListener);
         addMouseMotionListener(frameDragListener);
-        pack();
         setLocationRelativeTo(null);
     }
-    public Screen(int height,int width,Runnable init) {
-        super();
-        setUndecorated(true);
 
-        JPanel contentPane = new JPanel(new BorderLayout());
-        background.setBounds(0,0,width,height/2);
-        contentPane.add(background);
-        setContentPane(contentPane);
-
-        FrameDragListener frameDragListener = new FrameDragListener(this);
-        addMouseListener(frameDragListener);
-        addMouseMotionListener(frameDragListener);
-
-        pack();
-        setLocationRelativeTo(null);
-        init.run();
-    }
     public static class FrameDragListener extends MouseAdapter {
 
         private final JFrame frame;
@@ -71,7 +51,6 @@ public class Screen extends JFrame{
         } else {
             background.setIcon(new ImageIcon("src/main/java/org/example/Background/Handrawn/" + name + ".png"));
         }
-        this.getContentPane().setComponentZOrder(background, this.getContentPane().getComponentCount() - 2);
     }
 
     public static void waitTillClick() {

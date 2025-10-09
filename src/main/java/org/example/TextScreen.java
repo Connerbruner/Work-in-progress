@@ -16,14 +16,6 @@ public class TextScreen extends Screen {
         }
     }
 
-    public TextScreen(int height, int width, Runnable init, int linewidth, int lineCount) {
-        super(height, width, init);
-        charPerLine = linewidth;
-        texts = new JLabel[lineCount];
-        for(int i=0; i<texts.length; i++) {
-            texts[i] = new JLabel();
-        }
-    }
     public void sPrintln(String str) {
         sPrintln("", str);
     }
