@@ -4,57 +4,62 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ImageTest extends ChoiceScreen {
-    private JButton[] buttons;
+    int appCount = 15;
+    int keyCount = 30;
+
+    private JButton[] buttons = new JButton[appCount+keyCount];
+    JPanel appsWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
+    JPanel keyboardWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
+    JPanel mainContentPanel = new JPanel();
+    JPanel keyboardPanel = new JPanel(new GridLayout(3, 10, 5, 5));
+    JPanel appsPanel = new JPanel(new GridLayout(3, 5, 20, 20));
+
+    Dimension squareSize = new Dimension(45, 45);
+    Dimension largeSize = new Dimension(72, 72);
+
+
+
+    public static void main(String[] args) {
+        new ImageTest();
+    }
+
+
 
     public ImageTest() {
-        // Call the superclass constructor to initialize the JFrame.
         super(800, 500, 1, 1);
-
-        // Set the layout for this Phone class (which is a JFrame).
         setLayout(new BorderLayout());
 
-        // Create the buttons only once.
-        int appCount = 15;
-        int keyCount = 30;
-        buttons = new JButton[appCount + keyCount];
-        for (int i = 0; i < buttons.length; i++) {
-            buttons[i] = new JButton("Btn " + (i + 1));
-        }
-
-        // Panel for the "apps" grid
-        JPanel appsPanel = new JPanel(new GridLayout(5, 3, 20, 20));
+        // Apps panel (grid)
         for (int i = 0; i < appCount; i++) {
-            appsPanel.add(buttons[i]);
+            SquareButton squareButton = new SquareButton("",largeSize);
+            appsPanel.add(squareButton);
+            buttons[i] = squareButton;
         }
-        appsPanel.setBorder(BorderFactory.createTitledBorder("Apps"));
 
-        // Panel for the "keyboard" grid
-        JPanel keyboardPanel = new JPanel(new GridLayout(10, 3, 20, 20));
-        for (int i = appCount; i < appCount + keyCount; i++) {
-            keyboardPanel.add(buttons[i]);
+        appsWrapper.add(appsPanel);
+        appsWrapper.setBorder(BorderFactory.createEmptyBorder(100, 30, 10, 30));
+
+        // Keyboard panel (grid)
+        for (int i = 0; i < keyCount; i++) {
+            SquareButton squareButton = new SquareButton("", squareSize);
+            keyboardPanel.add(squareButton);
+            buttons[i+appCount] = squareButton;
         }
-        keyboardPanel.setBorder(BorderFactory.createTitledBorder("Keyboard"));
 
-        // Create a main content panel to hold the apps and keyboard vertically.
-        // BoxLayout is an excellent choice for stacking components.
-        JPanel mainContentPanel = new JPanel();
-        mainContentPanel.setLayout(new BoxLayout(mainContentPanel, BoxLayout.Y_AXIS));
 
-        // Add the sub-panels to the main content panel.
-        mainContentPanel.add(appsPanel);
-        mainContentPanel.add(keyboardPanel);
+        keyboardWrapper.add(keyboardPanel);
+        keyboardWrapper.setBorder(BorderFactory.createEmptyBorder(30, 10, 10, 10));
 
-        // Add the single main content panel to the CENTER of the JFrame's BorderLayout.
+        // Main content panel
+        mainContentPanel.add(appsWrapper);
+        mainContentPanel.add(keyboardWrapper);
+
         add(mainContentPanel, BorderLayout.CENTER);
-
-        // Add some padding to the main content panel so it doesn't touch the edges.
-        mainContentPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
-        // Finalize the frame settings
         setLocationRelativeTo(null);
         setVisible(true);
     }
 
+    // Custom JButton that enforces square size
     public int getButtonPressedIndex() {
         for (int k = 0; k < buttons.length; k++) {
             if (buttons[k].getModel().isPressed()) {

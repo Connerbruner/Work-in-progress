@@ -4,10 +4,24 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Phone extends ChoiceScreen {
-    JLabel keyboard = new JLabel();
-    JLabel apps = new JLabel();
-    JLabel topRow = new JLabel();
-    JLabel bottomRow = new JLabel();
+    JPanel mainContentPanel = new JPanel();
+
+    JPanel keyboard = new JPanel(new GridLayout(3, 10, 5, 5));
+    JPanel keyboardWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
+    JPanel apps = new JPanel(new GridLayout(3, 5, 20, 20));
+    JPanel appsWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
+    JPanel topRow = new JPanel(new GridLayout(1, 5, 20, 20));
+    JPanel topRowWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
+    JPanel bottomRow = new JPanel(new GridLayout(1, 5, 20, 20));
+    JPanel bottomRowWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
+    Dimension keySize = new Dimension(45, 45);
+    Dimension appSize = new Dimension(72, 72);
+
+
 
     int appCount = 15;
     int keyCount = 30;
@@ -17,36 +31,70 @@ public class Phone extends ChoiceScreen {
     public Phone() {
         super(800, 500, 1, 1);
         setLayout(new BorderLayout());
-        apps.setLayout(new GridLayout(5, 3, 20, 20));
-        keyboard.setLayout(new GridLayout(10, 3, 20, 20));
-         bottomRow.setLayout(new GridLayout(5, 1, 20, 20));
 
-        for (int i = 0; i < buttons.length; i++) {
-            buttons[i] = new JButton();
-        }
         for (int i = 0; i < appCount; i++) {
+            JButton button = new SquareButton("",appSize);
+            buttons[i] = button;
             apps.add(buttons[i]);
+
         }
-        for (int i = 0; i < extraRows; i++) {
-            topRow.add(buttons[i]);
-        }
+        appsWrapper.add(apps);
+        appsWrapper.setBorder(BorderFactory.createEmptyBorder(100, 30, 10, 30));
+
+
         for (int i = 0; i < keyCount; i++) {
+            JButton button = new SquareButton("",keySize);
+            buttons[i+appCount+extraRows] = button;
             keyboard.add(buttons[i]);
         }
-        for (int i = 0; i < extraRows; i++) {
-            bottomRow.add(buttons[i]);
+        keyboardWrapper.add(keyboard);
+        keyboardWrapper.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+
+
+        mainContentPanel.add(appsWrapper);
+        mainContentPanel.add(topRowWrapper);
+        mainContentPanel.add(keyboardWrapper);
+        mainContentPanel.add(bottomRowWrapper);
+
+
+        add(mainContentPanel, BorderLayout.CENTER);
+
+
+
+    }
+    public ImageTest() {
+        super(800, 500, 1, 1);
+        setLayout(new BorderLayout());
+
+        // Apps panel (grid)
+        for (int i = 0; i < appCount; i++) {
+            SquareButton squareButton = new SquareButton("",largeSize);
+            appsPanel.add(squareButton);
+            buttons[i] = squareButton;
         }
-        apps.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        topRow.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        keyboard.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        bottomRow.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        add(apps, BorderLayout.NORTH);
-        add(topRow, BorderLayout.AFTER_LAST_LINE);
-        add(keyboard, BorderLayout.AFTER_LAST_LINE);
-        add(bottomRow, BorderLayout.SOUTH);
+
+        appsWrapper.add(appsPanel);
+        appsWrapper.setBorder(BorderFactory.createEmptyBorder(100, 30, 10, 30));
+
+        // Keyboard panel (grid)
+        for (int i = 0; i < keyCount; i++) {
+            SquareButton squareButton = new SquareButton("", squareSize);
+            keyboardPanel.add(squareButton);
+            buttons[i+appCount] = squareButton;
+        }
 
 
+        keyboardWrapper.add(keyboardPanel);
+        keyboardWrapper.setBorder(BorderFactory.createEmptyBorder(30, 10, 10, 10));
 
+        // Main content panel
+        mainContentPanel.add(appsWrapper);
+        mainContentPanel.add(keyboardWrapper);
+
+        add(mainContentPanel, BorderLayout.CENTER);
+        setLocationRelativeTo(null);
+        setVisible(true);
     }
     public int getButtonPressedIndex() {
         for (int k = 0; k < buttons.length; k++) {
