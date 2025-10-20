@@ -9,8 +9,7 @@ public class Main {
     public static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     public static final double SCREEN_RATIO = ((screenSize.getWidth()/2560)+(screenSize.getHeight()/1440))/2;
     public static Phone phone = new Phone();
-    public static Screen test = new Screen(500,500);
-    public static TextScreen logo = new TextScreen(200,500,50,10);
+    public static SceneScreen scene = new SceneScreen();
 
 
     static final Font VCR_FONT;
@@ -27,14 +26,17 @@ public class Main {
     public static Date currentDate = new Date(2025,2,17);
     public static int daysSurvived = 0;
 
-    public static void main(String[] args) {
-        phone.setVisible(true);
-        System.out.println("test");
-        JButton jButton;
-        while (true) {
-            while (phone.getButtonPressedIndex()==-1);
-            System.out.println(phone.getButtonPressedIndex());
-        }
+    public static void main(String[] args) throws IOException {
+        Character character = Character.ALL_CHARACTERS[0];
+        Character character1 = Character.ALL_CHARACTERS[1];
+
+
+        scene.setBackground(true,"park2");
+        scene.add(character);
+        scene.add(character1);
+        character.changeExpression("mad");
+        character1.changeExpression("mad");
+        scene.setupScene();
 
     }
     public static int random(int low, int high) {

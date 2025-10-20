@@ -3,7 +3,7 @@ package org.example;
 public class Job {
     private final String name;
     private final Game[] games;
-    private Character charatcher;
+    private PlayableCharacter charatcher;
     private final int numberOfGames;
     private final int min;
     private final int bonus;
@@ -20,7 +20,7 @@ public class Job {
         daysBettewnChecks = d;
     }
 
-    public void setCharatcher(Character c) {
+    public void setCharatcher(PlayableCharacter c) {
         charatcher = c;
     }
 

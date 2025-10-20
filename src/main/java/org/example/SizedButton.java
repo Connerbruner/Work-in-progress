@@ -3,10 +3,10 @@ package org.example;
 import javax.swing.*;
 import java.awt.*;
 
-class SquareButton extends JButton {
+class SizedButton extends JButton {
     private final Dimension size;
 
-    public SquareButton(String text, Dimension size) {
+    public SizedButton(String text, Dimension size) {
         super(text);
         this.size = size;
     }

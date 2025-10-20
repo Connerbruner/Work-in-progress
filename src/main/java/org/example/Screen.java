@@ -4,10 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 
-public class  Screen extends JFrame{
-
-
+public class  Screen extends JFrame {
     private JLabel background = new JLabel();
     private static boolean mouseReleased = false;
 
@@ -19,6 +18,10 @@ public class  Screen extends JFrame{
         addMouseListener(frameDragListener);
         addMouseMotionListener(frameDragListener);
         setLocationRelativeTo(null);
+
+        background.setBounds(0, 0, width, height);
+        background.setOpaque(false);
+        add(background);
     }
 
     public static class FrameDragListener extends MouseAdapter {
@@ -47,10 +50,17 @@ public class  Screen extends JFrame{
     public void setBackground(Boolean isPhoto, String name) {
         background.setVisible(true);
         if (isPhoto) {
-            background.setIcon( new ImageIcon("src/main/java/org/example/Background/Photos/" + name + ".png"));
+            setBackground("src/main/java/org/example/Background/Photos/" + name + ".png");
         } else {
-            background.setIcon(new ImageIcon("src/main/java/org/example/Background/Handrawn/" + name + ".png"));
+            setBackground("src/main/java/org/example/Background/Handrawn/" + name + ".png");
         }
+    }
+    public void setBackground(Character character, String expression) {
+        setBackground(character.getPath()+"/" + expression + ".png");
+    }
+    public void setBackground(String path) {
+        setVisible(true);
+        background.setIcon(Main.scaleImage(getWidth(),getHeight(),new ImageIcon(path)));
     }
 
     public static void waitTillClick() {
@@ -58,5 +68,8 @@ public class  Screen extends JFrame{
         while (!mouseReleased) {
             Main.wait(1);
         }
+    }
+    public void setLocaction(int x,int y) {
+        setBounds(x,y,getWidth(),getHeight());
     }
 }

@@ -9,92 +9,71 @@ public class Phone extends ChoiceScreen {
     JPanel keyboard = new JPanel(new GridLayout(3, 10, 5, 5));
     JPanel keyboardWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
-    JPanel apps = new JPanel(new GridLayout(3, 5, 20, 20));
+    JPanel apps = new JPanel(new GridLayout(2, 5, 20, 20));
     JPanel appsWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
-    JPanel topRow = new JPanel(new GridLayout(1, 5, 20, 20));
+    JPanel topRow = new JPanel(new GridLayout(1, 5, 10, 5));
     JPanel topRowWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
-    JPanel bottomRow = new JPanel(new GridLayout(1, 5, 20, 20));
+    JPanel bottomRow = new JPanel(new GridLayout(1, 5, 5, 0));
     JPanel bottomRowWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
-    Dimension keySize = new Dimension(45, 45);
+    Dimension keySize = new Dimension(42, 42);
     Dimension appSize = new Dimension(72, 72);
+    Dimension wideSize = new Dimension(90,45);
 
 
 
-    int appCount = 15;
+    int appCount = 10;
     int keyCount = 30;
     int extraRows = 5;
     JButton[] buttons = new JButton[appCount + keyCount + (extraRows * 2)];
 
     public Phone() {
-        super(800, 500, 1, 1);
+        super(750, 500, 1, 1);
         setLayout(new BorderLayout());
 
+        // App panel (grid)
         for (int i = 0; i < appCount; i++) {
-            JButton button = new SquareButton("",appSize);
-            buttons[i] = button;
-            apps.add(buttons[i]);
-
+            SizedButton sizedButton = new SizedButton("",appSize);
+            apps.add(sizedButton);
+            buttons[i] = sizedButton;
         }
         appsWrapper.add(apps);
-        appsWrapper.setBorder(BorderFactory.createEmptyBorder(100, 30, 10, 30));
+        appsWrapper.setBorder(BorderFactory.createEmptyBorder(150, 30, 10, 30));
 
+        for (int i = 0; i < extraRows; i++) {
+            SizedButton sizedButton = new SizedButton("",appSize);
+            topRow.add(sizedButton);
+            buttons[i+appCount] = sizedButton;
+        }
+        topRowWrapper.add(topRow);
+        topRowWrapper.setBorder(BorderFactory.createEmptyBorder(50, 30, 0, 30));
 
+        // Keyboard panel (grid)
         for (int i = 0; i < keyCount; i++) {
-            JButton button = new SquareButton("",keySize);
-            buttons[i+appCount+extraRows] = button;
-            keyboard.add(buttons[i]);
+            SizedButton sizedButton = new SizedButton("", keySize);
+            keyboard.add(sizedButton);
+            buttons[i+appCount+extraRows] = sizedButton;
         }
         keyboardWrapper.add(keyboard);
-        keyboardWrapper.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        for (int i = 0; i < extraRows; i++) {
+            SizedButton squareButton = new SizedButton("",wideSize);
+            bottomRow.add(squareButton);
+            buttons[i+extraRows+appCount+keyCount] = squareButton;
+        }
+        bottomRowWrapper.add(bottomRow);
 
 
-
+        // Main content panel
         mainContentPanel.add(appsWrapper);
         mainContentPanel.add(topRowWrapper);
         mainContentPanel.add(keyboardWrapper);
         mainContentPanel.add(bottomRowWrapper);
 
-
-        add(mainContentPanel, BorderLayout.CENTER);
-
-
-
-    }
-    public ImageTest() {
-        super(800, 500, 1, 1);
-        setLayout(new BorderLayout());
-
-        // Apps panel (grid)
-        for (int i = 0; i < appCount; i++) {
-            SquareButton squareButton = new SquareButton("",largeSize);
-            appsPanel.add(squareButton);
-            buttons[i] = squareButton;
-        }
-
-        appsWrapper.add(appsPanel);
-        appsWrapper.setBorder(BorderFactory.createEmptyBorder(100, 30, 10, 30));
-
-        // Keyboard panel (grid)
-        for (int i = 0; i < keyCount; i++) {
-            SquareButton squareButton = new SquareButton("", squareSize);
-            keyboardPanel.add(squareButton);
-            buttons[i+appCount] = squareButton;
-        }
-
-
-        keyboardWrapper.add(keyboardPanel);
-        keyboardWrapper.setBorder(BorderFactory.createEmptyBorder(30, 10, 10, 10));
-
-        // Main content panel
-        mainContentPanel.add(appsWrapper);
-        mainContentPanel.add(keyboardWrapper);
-
         add(mainContentPanel, BorderLayout.CENTER);
         setLocationRelativeTo(null);
-        setVisible(true);
     }
     public int getButtonPressedIndex() {
         for (int k = 0; k < buttons.length; k++) {
