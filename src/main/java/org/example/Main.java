@@ -1,6 +1,7 @@
 package org.example;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
@@ -15,7 +16,7 @@ public class Main {
     static final Font VCR_FONT;
     static {
         try {
-            VCR_FONT = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/java/org/example/Ui/VCR_OSD_MONO_1.001.ttf")).deriveFont(Font.BOLD, 50f);
+            VCR_FONT = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/java/org/example/Ui/VCR_OSD_MONO_1.001.ttf")).deriveFont(Font.BOLD, 20f);
         } catch (FontFormatException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
@@ -27,15 +28,14 @@ public class Main {
     public static int daysSurvived = 0;
 
     public static void main(String[] args) throws IOException {
+        JFrame.setDefaultLookAndFeelDecorated(true);
         Character character = Character.ALL_CHARACTERS[0];
         Character character1 = Character.ALL_CHARACTERS[1];
 
 
-        scene.setBackground(true,"park2");
+        scene.setVisible(true);
         scene.add(character);
         scene.add(character1);
-        character.changeExpression("mad");
-        character1.changeExpression("mad");
         scene.setupScene();
 
     }
@@ -78,6 +78,40 @@ public class Main {
         }
 
         return new ImageIcon(i.getImage().getScaledInstance(finalWidth, finalHeight, Image.SCALE_SMOOTH));
+    }
+    public static ImageIcon cropImageIcon(ImageIcon originalIcon, int x, int y, int cropWidth, int cropHeight) {
+        Image originalImage = originalIcon.getImage();
+        int imageWidth = originalImage.getWidth(null);
+        int imageHeight = originalImage.getHeight(null);
+
+        cropWidth = Math.min(cropWidth, imageWidth - x);
+        cropHeight = Math.min(cropHeight, imageHeight - y);
+        x = Math.max(0, Math.min(x, imageWidth - cropWidth));
+        y = Math.max(0, Math.min(y, imageHeight - cropHeight));
+
+        BufferedImage bufferedImage = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = bufferedImage.createGraphics();
+        g2d.drawImage(originalImage, 0, 0, null);
+        g2d.dispose();
+
+        BufferedImage croppedImage = bufferedImage.getSubimage(x, y, cropWidth, cropHeight);
+        return new ImageIcon(croppedImage);
+    }
+    public static BufferedImage toBufferedImage(Image img) {
+        if (img instanceof BufferedImage) {
+            return (BufferedImage) img;
+        }
+
+        // Create a buffered image with transparency
+        BufferedImage bimage = new BufferedImage(
+                img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+
+        // Draw the image on to the buffered image
+        Graphics2D bGr = bimage.createGraphics();
+        bGr.drawImage(img, 0, 0, null);
+        bGr.dispose();
+
+        return bimage;
     }
 
     public static ImageIcon scaleImage(double scale, ImageIcon i) {

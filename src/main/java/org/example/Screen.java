@@ -12,15 +12,31 @@ public class  Screen extends JFrame {
 
     public Screen(int height,int width) {
         super();
-        setUndecorated(true);
         setSize(width,height);
+        setAlwaysOnTop(true);
+        setResizable(false);
+        setLayout(null);
+
         FrameDragListener frameDragListener = new FrameDragListener(this);
         addMouseListener(frameDragListener);
         addMouseMotionListener(frameDragListener);
-        setLocationRelativeTo(null);
 
         background.setBounds(0, 0, width, height);
-        background.setOpaque(false);
+        add(background);
+    }
+    public Screen(int height,int width,boolean drag) {
+        super();
+        setSize(width,height);
+        setAlwaysOnTop(true);
+        setResizable(false);
+        setLayout(null);
+
+        if(drag) {
+            FrameDragListener frameDragListener = new FrameDragListener(this);
+            addMouseListener(frameDragListener);
+            addMouseMotionListener(frameDragListener);
+        }
+        background.setBounds(0, 0, width, height);
         add(background);
     }
 
@@ -61,6 +77,12 @@ public class  Screen extends JFrame {
     public void setBackground(String path) {
         setVisible(true);
         background.setIcon(Main.scaleImage(getWidth(),getHeight(),new ImageIcon(path)));
+
+    }
+    public void setBackground(ImageIcon imageIcon) {
+        setVisible(true);
+        background.setIcon(Main.scaleImage(getWidth(),getHeight(),imageIcon));
+
     }
 
     public static void waitTillClick() {
@@ -68,6 +90,9 @@ public class  Screen extends JFrame {
         while (!mouseReleased) {
             Main.wait(1);
         }
+    }
+    public static void setMouseReleased(boolean mouse) {
+        mouseReleased = mouse;
     }
     public void setLocaction(int x,int y) {
         setBounds(x,y,getWidth(),getHeight());
