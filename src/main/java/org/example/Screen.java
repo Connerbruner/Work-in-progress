@@ -31,6 +31,7 @@ public class Screen extends JFrame {
 
     public Screen(int height, int width, boolean drag) {
         super();
+
         setSize(width, height);
         setAlwaysOnTop(true);
         setResizable(false);
@@ -45,9 +46,9 @@ public class Screen extends JFrame {
             addMouseListener(frameDragListener);
             addMouseMotionListener(frameDragListener);
         }
-
         background.setBounds(0, 0, width, height);
         layeredPane.add(background, JLayeredPane.DEFAULT_LAYER);
+
     }
 
     public static class FrameDragListener extends MouseAdapter {
@@ -105,9 +106,5 @@ public class Screen extends JFrame {
 
     public static void setMouseReleased(boolean mouse) {
         mouseReleased = mouse;
-    }
-
-    public void setLocaction(int x, int y) {
-        setBounds(x, y, getWidth(), getHeight());
     }
 }

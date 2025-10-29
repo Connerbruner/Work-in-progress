@@ -11,7 +11,7 @@ public class Main {
     public static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     public static final double SCREEN_RATIO = ((screenSize.getWidth() / 2560) + (screenSize.getHeight() / 1440)) / 2;
     public static Phone phone = new Phone();
-    public static SceneScreen scene = new SceneScreen();
+    public static SceneScreen scene;
 
 
     static final Font VCR_FONT;
@@ -34,7 +34,7 @@ public class Main {
         Character character = Character.ALL_CHARACTERS[0];
         Character character1 = Character.ALL_CHARACTERS[1];
 
-
+        scene =  new SceneScreen();
         scene.setVisible(true);
         scene.setBackground(true,"park2");
 

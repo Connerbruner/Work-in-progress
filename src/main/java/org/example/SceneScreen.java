@@ -13,9 +13,9 @@ public class SceneScreen extends Screen {
 
     public void add(Character c) {
         characters.add(c);
-        layeredPane.add(c.getLabel(), JLayeredPane.MODAL_LAYER);
+        layeredPane.add(c.getLabel(), JLayeredPane.PALETTE_LAYER);
 
-        setPositionCharacter(c, 0 + 600 * (characters.size() % 2));
+        setPositionCharacter(c,   600 * (characters.size() % 2));
         c.setFlipped(characters.size() % 2 == 1);
         c.setVisible(true);
     }
@@ -39,14 +39,14 @@ public class SceneScreen extends Screen {
     }
 
     public void setPositionCharacter(Character character, int x) {
-        character.getLabel().setBounds(x, 145 + character.getHeightShort(), 421, 600);
+        character.getLabel().setBounds(x, 170 + character.getHeightShort(), 421, 600);
     }
 
     public void setupScene() {
         for (int i = 0; i < characters.size(); i++) {
             Character character = characters.get(i);
             int width = character.getScreen().getWidth();
-            character.getScreen().setLocaction(((i % 2) * (getWidth())) + getX() - width / 2, getHeight() + 10 + (width / 2 * i) + 10);
+            character.getScreen().setLocation(((i % 2) * (getWidth())) + getX() - width / 2, getHeight() + 10 + (width / 2 * i) + 10);
             character.changeExpression("default");
         }
 
