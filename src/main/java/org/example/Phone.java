@@ -3,7 +3,7 @@ package org.example;
 import javax.swing.*;
 import java.awt.*;
 
-public class Phone extends ChoiceScreen {
+public class Phone extends Screen {
     JPanel mainContentPanel = new JPanel();
 
     JPanel keyboard = new JPanel(new GridLayout(3, 10, 5, 5));
@@ -30,7 +30,7 @@ public class Phone extends ChoiceScreen {
     JButton[] buttons = new JButton[appCount + keyCount + (extraRows * 2)];
 
     public Phone() {
-        super(750, 500, 1, 1);
+        super(750, 500);
         setLayout(new BorderLayout());
 
         // App panel (grid)

@@ -11,8 +11,8 @@ import java.util.List;
 
 public class ChoiceScreen extends TextScreen {
     private final ArrayList<JButton> buttons = new ArrayList<>();
-    public ChoiceScreen(int height, int width, int linewidth, int lineCount) {
-        super(height, width, linewidth, lineCount);
+    public ChoiceScreen(int height, int width) {
+        super(height, width);
     }
 
 
