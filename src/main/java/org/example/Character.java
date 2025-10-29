@@ -11,6 +11,8 @@ public class Character {
     private String expression;
     private Screen screen;
     private JLabel label;
+    private int heightShort = 0;
+    private boolean isFlipped = false;
     //awakeness fitness sanity self-esteem Illness
     static final Character[] ALL_CHARACTERS = {
             PlayableCharacter.PLAYABLE_CHARACTERS[0],
@@ -25,6 +27,16 @@ public class Character {
         screen.setLayout(null);
         screen.setLocationRelativeTo(null);
         label = new JLabel();
+    }
+
+    public Character(String n, String folder, int h) {
+        name = n;
+        path = folder;
+        screen = new Screen(200, 200);
+        screen.setLayout(null);
+        screen.setLocationRelativeTo(null);
+        label = new JLabel();
+        heightShort = h;
     }
 
     public String getName() {
@@ -55,7 +67,12 @@ public class Character {
     public void changeExpression(String expression) {
         this.expression = expression;
         screen.setBackground(getExpressionPreview(expression));
-        label.setIcon(getExpression(expression));
+        if (isFlipped) {
+            label.setIcon(Main.flipImage(Main.scaleImage(label.getWidth(), label.getHeight(), getExpression(expression))));
+        } else {
+            label.setIcon(Main.scaleImage(label.getWidth(), label.getHeight(), getExpression(expression)));
+
+        }
         screen.setVisible(true);
     }
 
@@ -75,12 +92,12 @@ public class Character {
         int height = -1;
         for (int i = 0; i < image.getHeight() && height == -1; i++) {
             for (int j = 0; j < image.getWidth() && height == -1; j++) {
-                if (new Color(image.getRGB(j, i),true).getAlpha() == 255) {
-                    height = i-10;
+                if (new Color(image.getRGB(j, i), true).getAlpha() == 255) {
+                    height = i - 10;
                 }
             }
         }
-        int width = (int) ((image.getHeight()-height) * zoomratio);
+        int width = (int) ((image.getHeight() - height) * zoomratio);
         int bestX = 0;
         int minTransparentPixels = Integer.MAX_VALUE;
         for (int x = 0; x <= image.getWidth() - width; x++) {
@@ -113,10 +130,22 @@ public class Character {
         System.out.println("Cropping at X = " + bestX + ", Y = " + height + ", size = " + width);
 
 
-        return Main.cropImageIcon(getExpression(expression),bestX,height,width,width);
+        return Main.cropImageIcon(getExpression(expression), bestX, height, width, width);
+    }
+
+    public int getHeightShort() {
+        return heightShort;
     }
 
     public JLabel getLabel() {
         return label;
+    }
+
+    public boolean isFlipped() {
+        return isFlipped;
+    }
+
+    public void setFlipped(boolean flipped) {
+        isFlipped = flipped;
     }
 }

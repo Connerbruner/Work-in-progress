@@ -12,12 +12,21 @@ public class PlayableCharacter extends Character {
             new Job("Fish market",new Game[]{},130,0,7,0),
     };
     static final Character[] PLAYABLE_CHARACTERS = {
-            new PlayableCharacter("Carina","src/main/java/org/example/Charachters/Carina",new double[] {1,1,1.5,0.5,1},JOBS[1]),
+            new PlayableCharacter("Carina","src/main/java/org/example/Charachters/Carina",new double[] {1,1,1.5,0.5,1},JOBS[1],35),
             new PlayableCharacter("Orion","src/main/java/org/example/Charachters/Orion",new double[] {1,1.5,0.5,0.5,1},JOBS[0])
 
     };
     public PlayableCharacter(String n, String folder, double[] s, Job j) {
         super(n, folder);
+        statsInfluence = s;
+        job = j;
+        stats = new int[]{100, 100, 100, 100, 100};
+        balance = 100;
+        isDead = false;
+
+    }
+    public PlayableCharacter(String n, String folder, double[] s, Job j,int h) {
+        super(n, folder,h);
         statsInfluence = s;
         job = j;
         stats = new int[]{100, 100, 100, 100, 100};
