@@ -26,7 +26,6 @@ public class Job {
 
     public void run() {
         for (int i = 0; i < numberOfGames; i++) {
-            if (games[Main.random(games)].run()) goodGames++;
         }
         if(Main.daysSurvived%daysBettewnChecks==0) {
             charatcher.addBalance((min*daysBettewnChecks)+(goodGames*bonus));

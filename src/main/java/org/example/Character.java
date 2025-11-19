@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
 
 public class Character {
     private String name;
@@ -13,6 +14,7 @@ public class Character {
     private JLabel label;
     private int heightShort = 0;
     private boolean isFlipped = false;
+    ArrayList<Card> hand = new ArrayList<>();
     //awakeness fitness sanity self-esteem Illness
     static final Character[] ALL_CHARACTERS = {
             PlayableCharacter.PLAYABLE_CHARACTERS[0],
