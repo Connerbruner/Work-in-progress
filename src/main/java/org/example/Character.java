@@ -1,5 +1,8 @@
 package org.example;
 
+import org.example.Cards.Card;
+import org.example.Display.Screen;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;

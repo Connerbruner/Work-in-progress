@@ -1,4 +1,7 @@
-package org.example;
+package org.example.Display;
+
+import org.example.Character;
+import org.example.Main;
 
 import javax.swing.*;
 import java.awt.*;

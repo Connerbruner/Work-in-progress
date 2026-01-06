@@ -1,5 +1,8 @@
 package org.example;
 
+import org.example.Display.Phone;
+import org.example.Display.SceneScreen;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -14,7 +17,7 @@ public class Main {
     public static SceneScreen scene;
 
 
-    static final Font VCR_FONT;
+    public static final Font VCR_FONT;
 
     static {
         try {
@@ -144,12 +147,9 @@ public class Main {
         if (img instanceof BufferedImage) {
             return (BufferedImage) img;
         }
-
-        // Create a buffered image with transparency
         BufferedImage bimage = new BufferedImage(
                 img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
 
-        // Draw the image on to the buffered image
         Graphics2D bGr = bimage.createGraphics();
         bGr.drawImage(img, 0, 0, null);
         bGr.dispose();

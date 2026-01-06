@@ -1,4 +1,4 @@
-package org.example;
+package org.example.Cards;
 
 public class Ratio {
     int normalCards;

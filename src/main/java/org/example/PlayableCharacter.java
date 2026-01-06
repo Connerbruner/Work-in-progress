@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.Cards.Game;
+
 public class PlayableCharacter extends Character {
     private Job job;
     private double[] statsInfluence;

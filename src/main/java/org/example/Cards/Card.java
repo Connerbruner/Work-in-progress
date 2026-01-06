@@ -1,4 +1,6 @@
-package org.example;
+package org.example.Cards;
+
+import org.example.Display.Screen;
 
 import java.awt.*;
 
@@ -7,7 +9,7 @@ public class Card {
     private int color;
     private boolean faceDown;
     private boolean isWild;
-
+    private Screen cardScreen = new Screen(100,140);
     public final static Color[] ALL_COLORS = new Color[]{
             Color.red,
             Color.blue,
@@ -23,6 +25,7 @@ public class Card {
         number = n;
         color = c;
         faceDown = true;
+        setupScreen();
     }
 
     public Card(boolean wild) {
@@ -30,5 +33,11 @@ public class Card {
         color = 0;
         isWild = true;
         faceDown = true;
+        setupScreen();
+
+    }
+    public void setupScreen() {
+        cardScreen.setVisible(false);
+
     }
 }

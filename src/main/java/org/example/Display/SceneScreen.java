@@ -1,17 +1,19 @@
-package org.example;
+package org.example.Display;
+
+import org.example.Character;
 
 import javax.swing.*;
 import java.util.ArrayList;
 
 public class SceneScreen extends Screen {
-    private ArrayList<Character> characters = new ArrayList<>();
+    private ArrayList<org.example.Character> characters = new ArrayList<>();
     private TextScreen textScreen;
 
     public SceneScreen() {
         super(800, 1066);
     }
 
-    public void add(Character c) {
+    public void add(org.example.Character c) {
         characters.add(c);
         layeredPane.add(c.getLabel(), JLayeredPane.PALETTE_LAYER);
 
@@ -20,13 +22,13 @@ public class SceneScreen extends Screen {
         c.setVisible(true);
     }
 
-    public void remove(Character c) {
+    public void remove(org.example.Character c) {
         characters.remove(c);
         layeredPane.remove(c.getLabel());
         c.setVisible(false);
     }
 
-    public Character getCharacter(int i) {
+    public org.example.Character getCharacter(int i) {
         return characters.get(i);
     }
 
@@ -38,7 +40,7 @@ public class SceneScreen extends Screen {
         setPositionCharacter(characters.get(i), x);
     }
 
-    public void setPositionCharacter(Character character, int x) {
+    public void setPositionCharacter(org.example.Character character, int x) {
         character.getLabel().setBounds(x, 170 + character.getHeightShort(), 421, 600);
     }
 

@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.Cards.Game;
+
 public class Job {
     private final String name;
     private final Game[] games;
