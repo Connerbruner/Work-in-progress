@@ -1,6 +1,6 @@
 package org.example.Display;
 
-import org.example.Character;
+import org.example.GameCharacter;
 import org.example.Main;
 
 import javax.swing.*;
@@ -86,8 +86,8 @@ public class Screen extends JFrame {
         }
     }
 
-    public void setBackground(Character character, String expression) {
-        setBackground(character.getPath() + "/" + expression + ".png");
+    public void setBackground(GameCharacter gameCharacter, String expression) {
+        setBackground(gameCharacter.getPath() + "/" + expression + ".png");
     }
 
     public void setBackground(String path) {

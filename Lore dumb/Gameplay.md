@@ -34,7 +34,7 @@ Day System:
 
 Relationship system
 
-    When you meet up with a character you can hang out and trigger an event
+    When you meet up with a gameCharacter you can hang out and trigger an event
     If you don't hang out with anyone you can also try and meet new people
     You can also just skip hanging out with people
     hanging out with people slowly makes you closer.

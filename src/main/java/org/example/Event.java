@@ -8,10 +8,10 @@ public class Event {
         run=r;
     }
     public Event(EventVoid r) {
-        check=(Character c)->true;
+        check=(GameCharacter c)->true;
         run=r;
     }
-    public boolean checkRun(Character c) {
+    public boolean checkRun(GameCharacter c) {
         if(check.run(c)) {
             return run.run(c);
         }
@@ -20,8 +20,8 @@ public class Event {
 
 }
 interface EventVoid {
-    boolean run(Character c);
+    boolean run(GameCharacter c);
 }
 interface EventCheck {
-    boolean run(Character c);
+    boolean run(GameCharacter c);
 }

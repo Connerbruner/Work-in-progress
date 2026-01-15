@@ -1,6 +1,6 @@
 package org.example.Display;
 
-import org.example.Character;
+import org.example.GameCharacter;
 import org.example.Main;
 
 import javax.swing.*;
@@ -63,13 +63,13 @@ public class TextScreen extends Screen {
     }
 
     public void sPrintln(SceneScreen scene, int i, String str) {
-        Character character = scene.getCharacter(i);
-        int x = character.getScreen().getWidth() + character.getScreen().getX() + 30;
+        GameCharacter gameCharacter = scene.getCharacter(i);
+        int x = gameCharacter.getScreen().getWidth() + gameCharacter.getScreen().getX() + 30;
         if (i % 2 == 1) {
-            x -= getWidth() + character.getScreen().getWidth() + 60;
+            x -= getWidth() + gameCharacter.getScreen().getWidth() + 60;
         }
-        int y = character.getScreen().getY() - character.getScreen().getHeight() / 6;
-        sPrintln(character.getName(), str, x, y);
+        int y = gameCharacter.getScreen().getY() - gameCharacter.getScreen().getHeight() / 6;
+        sPrintln(gameCharacter.getName(), str, x, y);
     }
 
     public void sPrintln(String name, String str, int x, int y) {

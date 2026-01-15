@@ -1,35 +1,35 @@
 package org.example.Display;
 
-import org.example.Character;
+import org.example.GameCharacter;
 
 import javax.swing.*;
 import java.util.ArrayList;
 
 public class SceneScreen extends Screen {
-    private ArrayList<org.example.Character> characters = new ArrayList<>();
+    private ArrayList<GameCharacter> gameCharacters = new ArrayList<>();
     private TextScreen textScreen;
 
     public SceneScreen() {
         super(800, 1066);
     }
 
-    public void add(org.example.Character c) {
-        characters.add(c);
+    public void add(GameCharacter c) {
+        gameCharacters.add(c);
         layeredPane.add(c.getLabel(), JLayeredPane.PALETTE_LAYER);
 
-        setPositionCharacter(c,   600 * (characters.size() % 2));
-        c.setFlipped(characters.size() % 2 == 1);
+        setPositionCharacter(c,   600 * (gameCharacters.size() % 2));
+        c.setFlipped(gameCharacters.size() % 2 == 1);
         c.setVisible(true);
     }
 
-    public void remove(org.example.Character c) {
-        characters.remove(c);
+    public void remove(GameCharacter c) {
+        gameCharacters.remove(c);
         layeredPane.remove(c.getLabel());
         c.setVisible(false);
     }
 
-    public org.example.Character getCharacter(int i) {
-        return characters.get(i);
+    public GameCharacter getCharacter(int i) {
+        return gameCharacters.get(i);
     }
 
     public TextScreen getTextScreen() {
@@ -37,19 +37,19 @@ public class SceneScreen extends Screen {
     }
 
     public void setPositionCharacter(int i, int x) {
-        setPositionCharacter(characters.get(i), x);
+        setPositionCharacter(gameCharacters.get(i), x);
     }
 
-    public void setPositionCharacter(org.example.Character character, int x) {
-        character.getLabel().setBounds(x, 170 + character.getHeightShort(), 421, 600);
+    public void setPositionCharacter(GameCharacter gameCharacter, int x) {
+        gameCharacter.getLabel().setBounds(x, 170 + gameCharacter.getHeightShort(), 421, 600);
     }
 
     public void setupScene() {
-        for (int i = 0; i < characters.size(); i++) {
-            Character character = characters.get(i);
-            int width = character.getScreen().getWidth();
-            character.getScreen().setLocation(((i % 2) * (getWidth())) + getX() - width / 2, getHeight() + 10 + (width / 2 * i) + 10);
-            character.changeExpression("default");
+        for (int i = 0; i < gameCharacters.size(); i++) {
+            GameCharacter gameCharacter = gameCharacters.get(i);
+            int width = gameCharacter.getScreen().getWidth();
+            gameCharacter.getScreen().setLocation(((i % 2) * (getWidth())) + getX() - width / 2, getHeight() + 10 + (width / 2 * i) + 10);
+            gameCharacter.changeExpression("default");
         }
 
         textScreen = new TextScreen(150, 600);

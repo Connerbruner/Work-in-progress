@@ -2,12 +2,12 @@ package org.example;
 
 public class Storyline {
     private Event[][] events;
-    private Character[] characters;
+    private GameCharacter[] gameCharacters;
     private int isBad;
     private int progress;
-    public Storyline(Event[][] e, Character[] c) {
+    public Storyline(Event[][] e, GameCharacter[] c) {
         events=e;
-        characters=c;
+        gameCharacters =c;
         isBad=0;
         progress=0;
     }
@@ -15,7 +15,7 @@ public class Storyline {
         isBad=0;
         progress=0;
     }
-    public void checkRun(Character c) {
+    public void checkRun(GameCharacter c) {
         Event e = events[isBad][progress];
         if(e.checkRun(c)) {
             progress++;

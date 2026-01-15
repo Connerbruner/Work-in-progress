@@ -2,7 +2,7 @@ package org.example;
 
 import org.example.Cards.Game;
 
-public class PlayableCharacter extends Character {
+public class PlayableCharacter extends GameCharacter {
     private Job job;
     private double[] statsInfluence;
     private int[] stats;
@@ -10,31 +10,25 @@ public class PlayableCharacter extends Character {
     private boolean isDead;
 
     static final Job[] JOBS = {
-            new Job("Getting up",new Game[]{},0,0,5,0),
-            new Job("Fish market",new Game[]{},130,0,7,0),
+            new Job("Getting up", new Game[]{}, 0, 0, 5, 0),
+            new Job("Fish market", new Game[]{}, 130, 0, 7, 0),
     };
-    static final Character[] PLAYABLE_CHARACTERS = {
-            new PlayableCharacter("Carina","src/main/java/org/example/Charachters/Carina",new double[] {1,1,1.5,0.5,1},JOBS[1],35),
-            new PlayableCharacter("Orion","src/main/java/org/example/Charachters/Orion",new double[] {1,1.5,0.5,0.5,1},JOBS[0])
-
+    static final GameCharacter[] PLAYABLE_GAME_CHARACTERS = {
+            new PlayableCharacter("Carina", "src/main/java/org/example/Charachters/Carina", new double[]{1, 1, 1.5, 0.5, 1}, JOBS[1], 35,),
+            new PlayableCharacter("Orion", "src/main/java/org/example/Charachters/Orion", new double[]{1, 1.5, 0.5, 0.5, 1}, JOBS[0],)
     };
-    public PlayableCharacter(String n, String folder, double[] s, Job j) {
-        super(n, folder);
-        statsInfluence = s;
-        job = j;
-        stats = new int[]{100, 100, 100, 100, 100};
-        balance = 100;
-        isDead = false;
 
+    public PlayableCharacter(String n, String folder, double[] s, Job j, double[] aiWeights) {
+        this(n,folder,s,j,0,aiWeights);
     }
-    public PlayableCharacter(String n, String folder, double[] s, Job j,int h) {
-        super(n, folder,h);
+
+    public PlayableCharacter(String n, String folder, double[] s, Job j, int h, double[] aiWeights) {
+        super(n, folder, h, aiWeights);
         statsInfluence = s;
         job = j;
         stats = new int[]{100, 100, 100, 100, 100};
         balance = 100;
         isDead = false;
-
     }
 
     public void reset() {
@@ -77,6 +71,6 @@ public class PlayableCharacter extends Character {
     }
 
     public void addBalance(int amount) {
-        balance+=amount;
+        balance += amount;
     }
 }

@@ -34,19 +34,19 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         JFrame.setDefaultLookAndFeelDecorated(true);
-        Character character = Character.ALL_CHARACTERS[0];
-        Character character1 = Character.ALL_CHARACTERS[1];
+        GameCharacter gameCharacter = GameCharacter.ALL_GAME_CHARACTERS[0];
+        GameCharacter gameCharacter1 = GameCharacter.ALL_GAME_CHARACTERS[1];
 
-        scene =  new SceneScreen();
+        scene = new SceneScreen();
         scene.setVisible(true);
-        scene.setBackground(true,"park2");
+        scene.setBackground(true, "park2");
 
-        scene.add(character);
-        scene.add(character1);
+        scene.add(gameCharacter);
+        scene.add(gameCharacter1);
         scene.setupScene();
         scene.sPrintln("THIS IS A TEST");
-        scene.sPrintln(0,"THis is more of a test");
-        scene.sPrintln(1,"THis is more of a test");
+        scene.sPrintln(0, "THis is more of a test");
+        scene.sPrintln(1, "THis is more of a test");
 
     }
 
@@ -95,6 +95,17 @@ public class Main {
         return new ImageIcon(i.getImage().getScaledInstance(finalWidth, finalHeight, Image.SCALE_SMOOTH));
     }
 
+    public static int randomWithWeights(double[] weights) {
+        double r = Math.random();
+        for (int i = 0; i < weights.length; i++) {
+            if (r < weights[i]) {
+                return i;
+            }
+            r -= weights[i];
+        }
+        return -1;
+    }
+
     public static ImageIcon flipImage(ImageIcon icon) {
         BufferedImage image = iconToBuffer(icon);
 
@@ -141,20 +152,6 @@ public class Main {
 
         BufferedImage croppedImage = bufferedImage.getSubimage(x, y, cropWidth, cropHeight);
         return new ImageIcon(croppedImage);
-    }
-
-    public static BufferedImage toBufferedImage(Image img) {
-        if (img instanceof BufferedImage) {
-            return (BufferedImage) img;
-        }
-        BufferedImage bimage = new BufferedImage(
-                img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-
-        Graphics2D bGr = bimage.createGraphics();
-        bGr.drawImage(img, 0, 0, null);
-        bGr.dispose();
-
-        return bimage;
     }
 
     public static ImageIcon scaleImage(double scale, ImageIcon i) {

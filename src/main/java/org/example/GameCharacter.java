@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 
-public class Character {
+public class GameCharacter {
     private String name;
     private String path;
     private String expression;
@@ -17,15 +17,19 @@ public class Character {
     private JLabel label;
     private int heightShort = 0;
     private boolean isFlipped = false;
+    private double[] cardWeights;
     ArrayList<Card> hand = new ArrayList<>();
     //awakeness fitness sanity self-esteem Illness
-    static final Character[] ALL_CHARACTERS = {
-            PlayableCharacter.PLAYABLE_CHARACTERS[0],
-            PlayableCharacter.PLAYABLE_CHARACTERS[1]
+    static final GameCharacter[] ALL_GAME_CHARACTERS = {
+            PlayableCharacter.PLAYABLE_GAME_CHARACTERS[0],
+            PlayableCharacter.PLAYABLE_GAME_CHARACTERS[1]
 
     };
-
-    public Character(String n, String folder) {
+    public void addCard(Card c) {
+        hand.add(c);
+    }
+    public GameCharacter(String n, String folder,double[] aiWeights) {
+        cardWeights = aiWeights;
         name = n;
         path = folder;
         screen = new Screen(200, 200);
@@ -34,13 +38,8 @@ public class Character {
         label = new JLabel();
     }
 
-    public Character(String n, String folder, int h) {
-        name = n;
-        path = folder;
-        screen = new Screen(200, 200);
-        screen.setLayout(null);
-        screen.setLocationRelativeTo(null);
-        label = new JLabel();
+    public GameCharacter(String n, String folder, int h,double[] aiWeights) {
+        this(n,folder,aiWeights);
         heightShort = h;
     }
 
@@ -93,7 +92,7 @@ public class Character {
 
     public ImageIcon getExpressionPreview(String expression) {
         double zoomratio = 0.25;
-        BufferedImage image = Main.toBufferedImage(getExpression(expression).getImage());
+        BufferedImage image = Main.iconToBuffer(getExpression(expression));
         int height = -1;
         for (int i = 0; i < image.getHeight() && height == -1; i++) {
             for (int j = 0; j < image.getWidth() && height == -1; j++) {
@@ -136,6 +135,20 @@ public class Character {
 
 
         return Main.cropImageIcon(getExpression(expression), bestX, height, width, width);
+    }
+    public Card getChosenCard(Card topCard) {
+        ArrayList<Card> tempHand = (ArrayList<Card>) hand.clone();
+        for (int i = 0; i < hand.size(); i++) {
+            if(!Card.isValidCombo(tempHand.get(i),topCard)) {
+                tempHand.remove(i);
+            }
+        }
+        double[] weightsArr = new double[tempHand.size()];
+        for (int i = 0; i < tempHand.size(); i++) {
+            weightsArr[i]=(cardWeights[tempHand.get(i).getNumber()]);
+        }
+        return tempHand.get(Main.randomWithWeights(weightsArr));
+
     }
 
     public int getHeightShort() {

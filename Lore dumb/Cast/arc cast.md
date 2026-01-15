@@ -1,7 +1,7 @@
 Izars arc:
 
     The Rat (he/him)
-        Not much character
+        Not much gameCharacter
         Pulls pranks that often kill people
         Live streams
     Arrokoth
