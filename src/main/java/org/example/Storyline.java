@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.Timeline.Event;
+
 public class Storyline {
     private Event[][] events;
     private GameCharacter[] gameCharacters;
