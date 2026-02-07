@@ -30,7 +30,6 @@ public class Event {
     public void decreaseTicks(int amount) {
         this.eventTicks -= amount;
     }
-
     public int getEventTicks() {
         return eventTicks;
     }
