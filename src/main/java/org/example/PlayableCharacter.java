@@ -1,6 +1,8 @@
 package org.example;
 
-import org.example.Cards.Game;
+import org.example.Cards.UnoGame;
+
+import java.util.ArrayList;
 
 public class PlayableCharacter extends GameCharacter {
     private Job job;
@@ -10,12 +12,12 @@ public class PlayableCharacter extends GameCharacter {
     private boolean isDead;
 
     static final Job[] JOBS = {
-            new Job("Getting up", new Game[]{}, 0, 0, 5, 0),
-            new Job("Fish market", new Game[]{}, 130, 0, 7, 0),
+            new Job("Getting up", new UnoGame[]{}, 0, 0, 5, 0),
+            new Job("Fish market", new UnoGame[]{}, 130, 0, 7, 0),
     };
     static final GameCharacter[] PLAYABLE_GAME_CHARACTERS = {
-            new PlayableCharacter("Carina", "src/main/java/org/example/Charachters/Carina", new double[]{1, 1, 1.5, 0.5, 1}, JOBS[1], 35,),
-            new PlayableCharacter("Orion", "src/main/java/org/example/Charachters/Orion", new double[]{1, 1.5, 0.5, 0.5, 1}, JOBS[0],)
+            new PlayableCharacter("Carina", "src/main/java/org/example/Charachters/Carina", new double[]{1, 1, 1.5, 0.5, 1}, JOBS[1], 35,new double[] {}),
+            new PlayableCharacter("Orion", "src/main/java/org/example/Charachters/Orion", new double[]{1, 1.5, 0.5, 0.5, 1}, JOBS[0],new double[] {})
     };
 
     public PlayableCharacter(String n, String folder, double[] s, Job j, double[] aiWeights) {

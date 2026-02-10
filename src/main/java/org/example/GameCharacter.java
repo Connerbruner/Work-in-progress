@@ -150,6 +150,18 @@ public class GameCharacter {
         return tempHand.get(Main.randomWithWeights(weightsArr));
 
     }
+    public boolean hasValidCard(Card topCard) {
+        for (int i = 0; i < hand.size(); i++) {
+            if(Card.isValidCombo(hand.get(i),topCard)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public void playCard(Card card) {
+        hand.remove(card);
+    }
+
 
     public int getHeightShort() {
         return heightShort;

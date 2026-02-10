@@ -33,20 +33,7 @@ public class Main {
     public static int daysSurvived = 0;
 
     public static void main(String[] args) throws IOException {
-        JFrame.setDefaultLookAndFeelDecorated(true);
-        GameCharacter gameCharacter = GameCharacter.ALL_GAME_CHARACTERS[0];
-        GameCharacter gameCharacter1 = GameCharacter.ALL_GAME_CHARACTERS[1];
-
-        scene = new SceneScreen();
-        scene.setVisible(true);
-        scene.setBackground(true, "park2");
-
-        scene.add(gameCharacter);
-        scene.add(gameCharacter1);
-        scene.setupScene();
-        scene.sPrintln("THIS IS A TEST");
-        scene.sPrintln(0, "THis is more of a test");
-        scene.sPrintln(1, "THis is more of a test");
+        phone.setVisible(true);
 
     }
 
