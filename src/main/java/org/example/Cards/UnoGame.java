@@ -9,8 +9,9 @@ public class UnoGame {
     private ArrayList<Card> deck = new ArrayList<>();
     private ArrayList<Card> discard = new ArrayList<>();
 
-
+    //in millis
     private long timeLimit;
+    private int roundLimit;
     private long turnTime;
     private int cardsPerTurn;
     private Rule[] rules;
@@ -21,8 +22,27 @@ public class UnoGame {
         this(60000, 5000, 1, new Ratio(), new Rule[0], c);
     }
 
-    public UnoGame(long t, int cardsPer, int turn, Ratio r, Rule[] rule, Character[] c) {
-        timeLimit = t;
+    public UnoGame(long time, int cardsPer, int turn, Ratio r, Rule[] rule, Character[] c) {
+        timeLimit = time;
+        roundLimit = -1;
+        cardsPerTurn = cardsPer;
+        ratio = r;
+        rules = rule;
+        turnTime = turn;
+
+    }
+    public UnoGame(int rounds, int cardsPer, int turn, Ratio r, Rule[] rule, Character[] c) {
+        timeLimit = -1;
+        roundLimit = rounds;
+        cardsPerTurn = cardsPer;
+        ratio = r;
+        rules = rule;
+        turnTime = turn;
+
+    }
+    public UnoGame(long time,int rounds, int cardsPer, int turn, Ratio r, Rule[] rule, Character[] c) {
+        timeLimit = time;
+        roundLimit = rounds;
         cardsPerTurn = cardsPer;
         ratio = r;
         rules = rule;
@@ -31,8 +51,11 @@ public class UnoGame {
     }
 
     public void playGame(ArrayList<GameCharacter> characters) {
-
+        long startTime = System.currentTimeMillis();
+        long endTime = timeLimit;
+        int roundCount = roundLimit;
     }
+    public boolean endGame(long startTime,)
 
     public void singleLoop(ArrayList<GameCharacter> characters) {
         for (int i = 0; i < characters.size(); i++) {
@@ -40,7 +63,6 @@ public class UnoGame {
             if (character.hasValidCard(discard.get(0))) {
                 Card card = character.getChosenCard(discard.get(0));
                 addDiscard(card);
-
             } else {
                 drawCard(character);
             }
@@ -75,6 +97,7 @@ public class UnoGame {
 
 
     public void fillDeck() {
+        deck.clear();
         for (int i = 0; i < ratio.getColorCount(); i++) {
             for (int j = 0; j < ratio.getCyclePerColor(); j++) {
                 for (int k = 0; k < ratio.getNormalCards(); k++) {
