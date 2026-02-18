@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.Cards.UnoGame;
 import org.example.Display.Phone;
 import org.example.Display.SceneScreen;
 
@@ -8,6 +9,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Main {
@@ -15,6 +17,10 @@ public class Main {
     public static final double SCREEN_RATIO = ((screenSize.getWidth() / 2560) + (screenSize.getHeight() / 1440)) / 2;
     public static Phone phone = new Phone();
     public static SceneScreen scene;
+    public static final GameCharacter[] ALL_GAME_CHARACTERS = {
+            PlayableCharacter.PLAYABLE_GAME_CHARACTERS[0],
+            PlayableCharacter.PLAYABLE_GAME_CHARACTERS[1]
+    };
 
 
     public static final Font VCR_FONT;
@@ -29,12 +35,14 @@ public class Main {
         }
     }
 
-    public static Date currentDate = new Date(2025, 2, 17);
+    public static Date currentDate = new Date(2025, Calendar.MARCH, 17);
     public static int daysSurvived = 0;
 
     public static void main(String[] args) throws IOException {
         phone.setVisible(true);
-
+//        for(GameCharacter character : ALL_GAME_CHARACTERS) {
+//            UnoGame.startingFillHand(character);
+//        }
     }
 
     public static int random(int low, int high) {

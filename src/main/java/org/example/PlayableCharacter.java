@@ -1,6 +1,8 @@
 package org.example;
 
+import org.example.Cards.Card;
 import org.example.Cards.UnoGame;
+import org.example.Display.Screen;
 
 import java.util.ArrayList;
 
@@ -10,14 +12,17 @@ public class PlayableCharacter extends GameCharacter {
     private int[] stats;
     private int balance;
     private boolean isDead;
+    private boolean isPlayable;
+    public static final double[] TEST_VALUES = {0.5,0.5,0.5,0.5,0.5,0.5,0.5
+                                        ,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5};
 
     static final Job[] JOBS = {
-            new Job("Getting up", new UnoGame[]{}, 0, 0, 5, 0),
-            new Job("Fish market", new UnoGame[]{}, 130, 0, 7, 0),
+            new Job("Getting up", new UnoGame(), 0, 0, 5, 0),
+            new Job("Fish market", new UnoGame(), 130, 0, 7, 0),
     };
-    static final GameCharacter[] PLAYABLE_GAME_CHARACTERS = {
-            new PlayableCharacter("Carina", "src/main/java/org/example/Charachters/Carina", new double[]{1, 1, 1.5, 0.5, 1}, JOBS[1], 35,new double[] {}),
-            new PlayableCharacter("Orion", "src/main/java/org/example/Charachters/Orion", new double[]{1, 1.5, 0.5, 0.5, 1}, JOBS[0],new double[] {})
+    static final PlayableCharacter[] PLAYABLE_GAME_CHARACTERS = {
+            new PlayableCharacter("Carina", "src/main/java/org/example/Charachters/Carina", new double[]{1, 1, 1.5, 0.5, 1}, JOBS[1], 35,TEST_VALUES),
+            new PlayableCharacter("Orion", "src/main/java/org/example/Charachters/Orion", new double[]{1, 1.5, 0.5, 0.5, 1}, JOBS[0],TEST_VALUES)
     };
 
     public PlayableCharacter(String n, String folder, double[] s, Job j, double[] aiWeights) {
@@ -31,6 +36,10 @@ public class PlayableCharacter extends GameCharacter {
         stats = new int[]{100, 100, 100, 100, 100};
         balance = 100;
         isDead = false;
+        isPlayable=true;
+    }
+    public void choseCard(Card topCard) {
+
     }
 
     public void reset() {
@@ -74,5 +83,13 @@ public class PlayableCharacter extends GameCharacter {
 
     public void addBalance(int amount) {
         balance += amount;
+    }
+
+    public void setPlayable(boolean playable) {
+        isPlayable = playable;
+    }
+
+    public boolean isPlayable() {
+        return isPlayable;
     }
 }

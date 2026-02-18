@@ -7,34 +7,25 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class Screen extends JFrame {
     private JLabel background = new JLabel();
     protected JLayeredPane layeredPane = new JLayeredPane();
     private static boolean mouseReleased = false;
+    public static final ArrayList<Screen> SCREENS = new ArrayList<>();
+    private static double scale = 1;
+    public int baseHeight,baseWidth;
 
     public Screen(int height, int width) {
-        super();
-        setSize(width, height);
-        setAlwaysOnTop(true);
-        setResizable(false);
-        setLayout(null);
-
-        layeredPane.setBounds(0, 0, width, height);
-        layeredPane.setLayout(null);
-        setContentPane(layeredPane);
-
-        FrameDragListener frameDragListener = new FrameDragListener(this);
-        addMouseListener(frameDragListener);
-        addMouseMotionListener(frameDragListener);
-
-        background.setBounds(0, 0, width, height);
-        layeredPane.add(background, JLayeredPane.DEFAULT_LAYER);
+        this(height,width,true);
     }
 
     public Screen(int height, int width, boolean drag) {
         super();
-
+        baseHeight=height;
+        baseWidth=width;
         setSize(width, height);
         setAlwaysOnTop(true);
         setResizable(false);
@@ -51,6 +42,7 @@ public class Screen extends JFrame {
         }
         background.setBounds(0, 0, width, height);
         layeredPane.add(background, JLayeredPane.DEFAULT_LAYER);
+        SCREENS.add(this);
 
     }
 
@@ -104,6 +96,25 @@ public class Screen extends JFrame {
         mouseReleased = false;
         while (!mouseReleased) {
             Main.wait(1);
+        }
+    }
+
+    public int getBaseHeight() {
+        return baseHeight;
+    }
+
+    public int getBaseWidth() {
+        return baseWidth;
+    }
+
+    public static double getScale() {
+        return scale;
+    }
+
+    public static void setScale(double scale) {
+        Screen.scale = scale;
+        for (int i = 0; i <SCREENS.size(); i++) {
+            SCREENS.get(i).setSize(SCREENS.get(i).getBaseHeight(),SCREENS.get(i).getBaseWidth());
         }
     }
 

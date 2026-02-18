@@ -107,13 +107,11 @@ public class TextScreen extends Screen {
         String[] words = str.split(" ");
 
         for (String word : words) {
-            if ((textLines[lines] + word).length() < charPerLine) {
-                textLines[lines] += word + " ";
-            } else {
+            if ((textLines[lines] + word).length() >= charPerLine) {
                 lines++;
                 if (lines >= textLines.length) break;
-                textLines[lines] += word + " ";
             }
+            textLines[lines] += word + " ";
         }
 
         for (int i = 0; i < textLines.length; i++) {

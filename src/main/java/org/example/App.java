@@ -10,16 +10,16 @@ public class App {
             new App("Notes") {
                 @Override
                 public void run() throws IOException {
-                    String notes = "";
+                    StringBuilder notes = new StringBuilder();
                     BufferedReader br = new BufferedReader(new FileReader("notes.txt"));
                     String str = "";
                     while ((str = br.readLine()) != null) {
-                        notes += str+"\n";
+                        notes.append(str).append("\n");
                     }
                     br.close();
                     JFrame jFrame = new JFrame("notes");
                     jFrame.setSize(500,500);
-                    JTextField field = new JTextField(notes);
+                    JTextField field = new JTextField(notes.toString());
                     jFrame.add(field);
                     jFrame.setVisible(true);
                     jFrame.addWindowListener(new WindowAdapter() {

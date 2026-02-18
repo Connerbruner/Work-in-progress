@@ -18,13 +18,9 @@ public class GameCharacter {
     private int heightShort = 0;
     private boolean isFlipped = false;
     private double[] cardWeights;
-    ArrayList<Card> hand = new ArrayList<>();
+    private ArrayList<Card> hand = new ArrayList<>();
     //awakeness fitness sanity self-esteem Illness
-    static final GameCharacter[] ALL_GAME_CHARACTERS = {
-            PlayableCharacter.PLAYABLE_GAME_CHARACTERS[0],
-            PlayableCharacter.PLAYABLE_GAME_CHARACTERS[1]
 
-    };
     public void addCard(Card c) {
         hand.add(c);
     }
@@ -138,7 +134,7 @@ public class GameCharacter {
     }
     public Card getChosenCard(Card topCard) {
         ArrayList<Card> tempHand = (ArrayList<Card>) hand.clone();
-        for (int i = 0; i < hand.size(); i++) {
+        for (int i = 0; i < tempHand.size(); i++) {
             if(!Card.isValidCombo(tempHand.get(i),topCard)) {
                 tempHand.remove(i);
             }
@@ -177,5 +173,9 @@ public class GameCharacter {
 
     public void setFlipped(boolean flipped) {
         isFlipped = flipped;
+    }
+
+    public ArrayList<Card> getHand() {
+        return hand;
     }
 }
