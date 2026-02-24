@@ -4,6 +4,7 @@ import org.example.Cards.UnoGame;
 import org.example.Display.Phone;
 import org.example.Display.SceneScreen;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -11,6 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
+
+import static javax.imageio.ImageIO.read;
 
 public class Main {
     public static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -152,4 +155,23 @@ public class Main {
     public static ImageIcon scaleImage(double scale, ImageIcon i) {
         return scaleImage((int) (i.getIconWidth() * scale), (int) (i.getIconHeight() * scale), i);
     }
+    public static ImageIcon getResourceImage(String path) {
+        try {
+            return new ImageIcon(read(Main.class.getResource("/resources/"+path)));
+
+        } catch (IOException e) {
+            return null;
+        }
+    }
+    public ImageIcon getBackground(boolean isPhoto,String name) {
+        if (isPhoto) {
+            return getResourceImage("Background/Photos/" + name + ".png");
+        } else {
+            return getResourceImage("Background/Handrawn/" + name + ".png");
+        }
+    }
+    public ImageIcon getCharacterImage(String character,String name) {
+            return getResourceImage("Characters/"+character+"/" + name + ".png");
+    }
+
 }
