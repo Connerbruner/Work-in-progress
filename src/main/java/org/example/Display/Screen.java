@@ -72,14 +72,14 @@ public class Screen extends JFrame {
     public void setBackground(Boolean isPhoto, String name) {
         background.setVisible(true);
         if (isPhoto) {
-            setBackground("src/main/java/org/example/Background/Photos/" + name + ".png");
+            setBackground(Main.getResourceImage( "Background/Photos/" + name + ".png"));
         } else {
-            setBackground("src/main/java/org/example/Background/Handrawn/" + name + ".png");
+            setBackground(Main.getResourceImage( "Background/Handrawn/" + name + ".png"));
         }
     }
 
     public void setBackground(GameCharacter gameCharacter, String expression) {
-        setBackground(gameCharacter.getPath() + "/" + expression + ".png");
+        setBackground(Main.getResourceImage( "Characters/"+gameCharacter.getName()+"/" + expression + ".png"));
     }
 
     public void setBackground(String path) {

@@ -1,51 +1,76 @@
-package org.example;
+    package org.example;
 
 import org.example.Cards.Card;
 import org.example.Display.Screen;
+import org.example.Timeline.Cannon;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.ArrayList;
 
 public class GameCharacter {
-    private String name;
-    private String path;
-    private String expression;
+    private String name, expression;
     private Screen screen;
     private JLabel label;
-    private int heightShort = 0;
+    private int heightShort, balance;
+    private boolean isDead = false;
     private boolean isFlipped = false;
-    private double[] cardWeights;
+    private int[] stats;
+    private double[] statsInfluence, cardWeights;
     private ArrayList<Card> hand = new ArrayList<>();
+    private Cannon cannon;
     //awakeness fitness sanity self-esteem Illness
 
     public void addCard(Card c) {
         hand.add(c);
     }
-    public GameCharacter(String n, String folder,double[] aiWeights) {
+
+    public GameCharacter(String n, double[] sI, double[] aiWeights) {
         cardWeights = aiWeights;
         name = n;
-        path = folder;
+        statsInfluence = sI;
+        stats = new int[]{100, 100, 100, 100, 100};
+        heightShort = 0;
+
         screen = new Screen(200, 200);
         screen.setLayout(null);
         screen.setLocationRelativeTo(null);
         label = new JLabel();
     }
 
-    public GameCharacter(String n, String folder, int h,double[] aiWeights) {
-        this(n,folder,aiWeights);
+    public GameCharacter(String n, int h, double[] sI, double[] aiWeights) {
+        this(n, sI, aiWeights);
         heightShort = h;
+    }
+    public GameCharacter(String n, int h, double[] sI, double[] aiWeights,Cannon c) {
+        this(n, sI, aiWeights);
+        heightShort = h;
+        cannon=c;
+    }
+    public GameCharacter(String n, double[] sI, double[] aiWeights,Cannon c) {
+        this(n,0, sI, aiWeights,c);
+    }
+
+    public void reset() {
+        stats = new int[]{100, 100, 100, 100, 100};
+        changeExpression("hidden");
+        balance = 100;
+        isDead = false;
+    }
+
+    public void choseCard(Card topCard) {
+
+    }
+
+    public Cannon getCannon() {
+        return cannon;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getPath() {
-        return path;
-    }
 
     public Screen getScreen() {
         return screen;
@@ -53,11 +78,11 @@ public class GameCharacter {
 
 
     public ImageIcon getExpression(String expression) {
-        return new ImageIcon(path + "/" + expression + ".png");
+        return new ImageIcon(Main.getResourceImage("Characters/" +name+ expression + ".png").getImage());
     }
 
     public boolean hasExpression(String expression) {
-        return (new File(path + "/" + expression + ".png").exists());
+        return Main.getResource("Characters/" +name+ expression + ".png").exists();
     }
 
     public String getCurrentExpression() {
@@ -132,28 +157,32 @@ public class GameCharacter {
 
         return Main.cropImageIcon(getExpression(expression), bestX, height, width, width);
     }
+
     public Card getChosenCard(Card topCard) {
         ArrayList<Card> tempHand = (ArrayList<Card>) hand.clone();
         for (int i = 0; i < tempHand.size(); i++) {
-            if(!Card.isValidCombo(tempHand.get(i),topCard)) {
+            if (!Card.isValidCombo(tempHand.get(i), topCard)) {
                 tempHand.remove(i);
+                i--;
             }
         }
         double[] weightsArr = new double[tempHand.size()];
         for (int i = 0; i < tempHand.size(); i++) {
-            weightsArr[i]=(cardWeights[tempHand.get(i).getNumber()]);
+            weightsArr[i] = (cardWeights[tempHand.get(i).getNumber()]);
         }
         return tempHand.get(Main.randomWithWeights(weightsArr));
 
     }
+
     public boolean hasValidCard(Card topCard) {
         for (int i = 0; i < hand.size(); i++) {
-            if(Card.isValidCombo(hand.get(i),topCard)) {
+            if (Card.isValidCombo(hand.get(i), topCard)) {
                 return true;
             }
         }
         return false;
     }
+
     public void playCard(Card card) {
         hand.remove(card);
     }
@@ -177,5 +206,37 @@ public class GameCharacter {
 
     public ArrayList<Card> getHand() {
         return hand;
+    }
+
+    public double getStatInfluence(int i) {
+        return statsInfluence[i];
+    }
+
+    public void setBalance(int balance) {
+        this.balance = balance;
+    }
+
+    public void subtractBalance(int sub) {
+        this.balance -= sub;
+    }
+
+    public double getStats(int i) {
+        return stats[i];
+    }
+
+    public int getBalance() {
+        return balance;
+    }
+
+    public void setDead(boolean dead) {
+        isDead = dead;
+    }
+
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public void addBalance(int amount) {
+        balance += amount;
     }
 }

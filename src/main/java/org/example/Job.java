@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.Cards.UnoGame;
+import org.example.Timeline.Game;
 
 public class Job {
     private final String name;
@@ -27,7 +28,7 @@ public class Job {
     }
 
     public void run() {
-        if(Main.daysSurvived%daysBettewnChecks==0) {
+        if(Game.getDaysSurvived()%daysBettewnChecks==0 && Game.getDaysSurvived()!=0) {
             charatcher.addBalance((min*daysBettewnChecks)+(goodGames*bonus));
             goodGames = 0;
         }

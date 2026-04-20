@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -20,17 +21,11 @@ public class Main {
     public static final double SCREEN_RATIO = ((screenSize.getWidth() / 2560) + (screenSize.getHeight() / 1440)) / 2;
     public static Phone phone = new Phone();
     public static SceneScreen scene;
-    public static final GameCharacter[] ALL_GAME_CHARACTERS = {
-            PlayableCharacter.PLAYABLE_GAME_CHARACTERS[0],
-            PlayableCharacter.PLAYABLE_GAME_CHARACTERS[1]
-    };
-
-
     public static final Font VCR_FONT;
 
     static {
         try {
-            VCR_FONT = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/java/org/example/Ui/VCR_OSD_MONO_1.001.ttf")).deriveFont(Font.BOLD, 20f);
+            VCR_FONT = Font.createFont(Font.TRUETYPE_FONT, Main.getResource("Ui/VCR_OSD_MONO_1.001.ttf")).deriveFont(Font.BOLD, 20f);
         } catch (FontFormatException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
@@ -38,8 +33,6 @@ public class Main {
         }
     }
 
-    public static Date currentDate = new Date(2025, Calendar.MARCH, 17);
-    public static int daysSurvived = 0;
 
     public static void main(String[] args) throws IOException {
         phone.setVisible(true);
@@ -68,7 +61,7 @@ public class Main {
 
     public static void wait(int millis) {
         long startTime = System.currentTimeMillis();
-        while (startTime + millis > System.currentTimeMillis()) ;
+        while (startTime+millis>System.currentTimeMillis());
     }
 
     public static ImageIcon scaleImage(int width, int height, ImageIcon i) {
@@ -94,14 +87,15 @@ public class Main {
     }
 
     public static int randomWithWeights(double[] weights) {
-        double r = Math.random();
+        if (weights.length == 0) return 0;
+        double total = 0;
+        for (double w : weights) total += w;
+        double r = Math.random() * total; // scale r to match actual sum
         for (int i = 0; i < weights.length; i++) {
-            if (r < weights[i]) {
-                return i;
-            }
             r -= weights[i];
+            if (r <= 0) return i;
         }
-        return -1;
+        return weights.length - 1; // never return -1
     }
 
     public static ImageIcon flipImage(ImageIcon icon) {
@@ -155,15 +149,28 @@ public class Main {
     public static ImageIcon scaleImage(double scale, ImageIcon i) {
         return scaleImage((int) (i.getIconWidth() * scale), (int) (i.getIconHeight() * scale), i);
     }
-    public static ImageIcon getResourceImage(String path) {
+    public static File getResource(String path) {
         try {
-            return new ImageIcon(read(Main.class.getResource("/resources/"+path)));
-
-        } catch (IOException e) {
+            java.net.URL url = Main.class.getResource("/" + path);
+            if (url == null) {
+                System.out.println("Resource not found: " + path);
+                return null;
+            }
+            return new File(url.toURI());
+        } catch (URISyntaxException e) {
+            System.out.println("No find");
             return null;
         }
     }
-    public ImageIcon getBackground(boolean isPhoto,String name) {
+    public static ImageIcon getResourceImage(String path) {
+        try {
+            return new ImageIcon(read(Main.getResource(path)));
+        } catch (IOException e) {
+            System.out.println("No find");
+            return null;
+        }
+    }
+        public ImageIcon getBackground(boolean isPhoto,String name) {
         if (isPhoto) {
             return getResourceImage("Background/Photos/" + name + ".png");
         } else {

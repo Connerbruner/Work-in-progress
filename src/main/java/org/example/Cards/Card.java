@@ -15,9 +15,9 @@ public class Card {
     private int number;
     private Color color;
     private boolean faceDown = true;
-    private boolean isWild;
+    private boolean isWild = false;
     private Screen cardScreen = new Screen(cardHeight, (int) (cardHeight*UNO_CARD_RATIO));
-    public static final ImageIcon FACEDOWN = new ImageIcon("/src/main/java/org/example/Ui/Cards/back");
+    public static final ImageIcon FACEDOWN = (Main.getResourceImage("Ui/Cards/card_back.png"));
     private ImageIcon faceUp;
     public final static Color[] ALL_COLORS = new Color[]{
             Color.red,
@@ -40,7 +40,6 @@ public class Card {
         color = ALL_COLORS[c];
         faceUp = getCardImage();
         cardScreen.setVisible(false);
-
     }
 
     public Card(boolean wild, boolean isPlus) {
@@ -58,12 +57,15 @@ public class Card {
             cardScreen.setBackground(faceUp);
         }
     }
+    public void setVisible(boolean visible) {
+        cardScreen.setVisible(visible);
+    }
 
     public ImageIcon getCardImage() {
-            BufferedImage cardImage ;
+            BufferedImage cardImage;
             try {
-                cardImage = Main.iconToBuffer(new ImageIcon("src/main/java/org/example/Ui/Cards/" + number+".png"));
-                System.out.println(number);
+
+                cardImage = Main.iconToBuffer(Main.getResourceImage("Ui/Cards/" + number+".png"));
                 for (int i = 0; i < cardImage.getWidth(); i++) {
                     for (int j = 0; j < cardImage.getHeight(); j++) {
                         int pixel = cardImage.getRGB(i, j);
@@ -73,6 +75,8 @@ public class Card {
                     }
                 }
             } catch (Exception e) {
+                System.out.println("We fucked up");
+
                 return new ImageIcon();
                 //cardImage = new BufferedImage(cardHeight, (int) (cardHeight*UNO_CARD_RATIO), BufferedImage.TYPE_INT_ARGB);
             }

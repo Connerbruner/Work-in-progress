@@ -2,89 +2,67 @@ package org.example;
 
 import org.example.Cards.Card;
 import org.example.Cards.UnoGame;
-import org.example.Display.Screen;
+import org.example.Timeline.Event;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class PlayableCharacter extends GameCharacter {
     private Job job;
-    private double[] statsInfluence;
-    private int[] stats;
-    private int balance;
-    private boolean isDead;
     private boolean isPlayable;
-    public static final double[] TEST_VALUES = {0.5,0.5,0.5,0.5,0.5,0.5,0.5
-                                        ,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5};
+    private LinkedList<Event> staringEvents = new LinkedList<>();
+    private LinkedList<Event> eventsToCheck = new LinkedList<>();
 
-    static final Job[] JOBS = {
-            new Job("Getting up", new UnoGame(), 0, 0, 5, 0),
-            new Job("Fish market", new UnoGame(), 130, 0, 7, 0),
-    };
-    static final PlayableCharacter[] PLAYABLE_GAME_CHARACTERS = {
-            new PlayableCharacter("Carina", "src/main/java/org/example/Charachters/Carina", new double[]{1, 1, 1.5, 0.5, 1}, JOBS[1], 35,TEST_VALUES),
-            new PlayableCharacter("Orion", "src/main/java/org/example/Charachters/Orion", new double[]{1, 1.5, 0.5, 0.5, 1}, JOBS[0],TEST_VALUES)
-    };
-
-    public PlayableCharacter(String n, String folder, double[] s, Job j, double[] aiWeights) {
-        this(n,folder,s,j,0,aiWeights);
+    public PlayableCharacter(String n, double[] s, Job j, double[] aiWeights,ArrayList<Event> sE) {
+        this(n,s,j,0,aiWeights);
+        staringEvents.addAll(sE);
+    }
+    public PlayableCharacter(String n, double[] s, Job j, double[] aiWeights,Event sE) {
+        this(n,s,j,0,aiWeights, sE);
+    }
+    public PlayableCharacter(String n, double[] s, Job j,int h, double[] aiWeights,Event sE) {
+        this(n,s,j,h,aiWeights);
+        staringEvents.add(sE);
+        eventsToCheck.add(sE);
+    }
+    public PlayableCharacter(String n, double[] s, Job j, double[] aiWeights) {
+        this(n,s,j,0,aiWeights);
     }
 
-    public PlayableCharacter(String n, String folder, double[] s, Job j, int h, double[] aiWeights) {
-        super(n, folder, h, aiWeights);
-        statsInfluence = s;
+
+    public PlayableCharacter(String n, double[] s, Job j, int h, double[] aiWeights) {
+        super(n, h,s, aiWeights);
         job = j;
-        stats = new int[]{100, 100, 100, 100, 100};
-        balance = 100;
-        isDead = false;
         isPlayable=true;
     }
-    public void choseCard(Card topCard) {
-
+    public void addEventToWatch(Event e) {
+        eventsToCheck.add(e);
+    }
+    public Event checkEvents() {
+        for (int i = 0; i < eventsToCheck.size(); i++) {
+            if(eventsToCheck.peek().checkRun(this)) {
+                return eventsToCheck.poll();
+            } else {
+                eventsToCheck.add(eventsToCheck.poll());
+            }
+        }
+        return null;
     }
 
+    @Override
     public void reset() {
-        stats = new int[]{100, 100, 100, 100, 100};
-        changeExpression("hidden");
-        balance = 100;
-        isDead = false;
+        super.reset();
+        eventsToCheck = staringEvents;
+    }
+
+    @Override
+    public void choseCard(Card topCard) {
+
     }
 
     public void runJob() {
         job.run();
     }
-
-    public double getStatInfluence(int i) {
-        return statsInfluence[i];
-    }
-
-    public void setBalance(int balance) {
-        this.balance = balance;
-    }
-
-    public void subtractBalance(int sub) {
-        this.balance -= sub;
-    }
-
-    public double getStats(int i) {
-        return stats[i];
-    }
-
-    public int getBalance() {
-        return balance;
-    }
-
-    public void setDead(boolean dead) {
-        isDead = dead;
-    }
-
-    public boolean isDead() {
-        return isDead;
-    }
-
-    public void addBalance(int amount) {
-        balance += amount;
-    }
-
     public void setPlayable(boolean playable) {
         isPlayable = playable;
     }
