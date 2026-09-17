@@ -1,11 +1,10 @@
 package org.example;
 
-import org.example.Cards.UnoGame;
+import org.example.Cards.CardGame;
 import org.example.Timeline.Game;
 
 public class Job {
     private final String name;
-    private final UnoGame unoGames;
     private PlayableCharacter charatcher;
     private final int numberOfGames;
     private final int min;
@@ -14,9 +13,8 @@ public class Job {
     private int goodGames = 0;
 
 
-    public Job(String s, UnoGame g, int m, int b, int n, int d) {
+    public Job(String s, int m, int b, int n, int d) {
         name = s;
-        unoGames = g;
         min = m;
         bonus = b;
         numberOfGames = n;

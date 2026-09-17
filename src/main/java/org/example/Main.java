@@ -1,18 +1,16 @@
 package org.example;
 
-import org.example.Cards.UnoGame;
 import org.example.Display.Phone;
 import org.example.Display.SceneScreen;
+import org.example.Display.TransparentScreen;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.ArrayList;
 
 import static javax.imageio.ImageIO.read;
 
@@ -36,6 +34,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         phone.setVisible(true);
+        new TransparentScreen(300,300).setVisible(true);
 //        for(GameCharacter character : ALL_GAME_CHARACTERS) {
 //            UnoGame.startingFillHand(character);
 //        }
@@ -90,12 +89,12 @@ public class Main {
         if (weights.length == 0) return 0;
         double total = 0;
         for (double w : weights) total += w;
-        double r = Math.random() * total; // scale r to match actual sum
+        double r = Math.random() * total;
         for (int i = 0; i < weights.length; i++) {
             r -= weights[i];
             if (r <= 0) return i;
         }
-        return weights.length - 1; // never return -1
+        return weights.length - 1;
     }
 
     public static ImageIcon flipImage(ImageIcon icon) {
@@ -111,6 +110,27 @@ public class Main {
         }
 
         return new ImageIcon(image);
+    }
+    static int mostFreqEle(ArrayList<Integer> arr) {
+        int n = arr.size(), maxcount = 0;
+        int res = 0;
+
+        for (int i = 0; i < n; i++) {
+            int count = 0;
+            for (int j = 0; j < n; j++) {
+                if (arr.get(0) == arr.get(i))
+                    count++;
+            }
+
+            // If count is greater or if count
+            // is same but value is bigger.
+            if (count > maxcount || (count == maxcount && arr.get(i) > res)) {
+                maxcount = count;
+                res = arr.get(i);
+            }
+        }
+
+        return res;
     }
 
     public static BufferedImage iconToBuffer(ImageIcon icon) {

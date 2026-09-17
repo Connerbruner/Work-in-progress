@@ -1,6 +1,6 @@
     package org.example;
 
-import org.example.Cards.Card;
+import org.example.Cards.CardGame;
 import org.example.Display.Screen;
 import org.example.Timeline.Cannon;
 
@@ -8,26 +8,29 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Stack;
 
-public class GameCharacter {
+    public class GameCharacter {
     private String name, expression;
     private Screen screen;
     private JLabel label;
     private int heightShort, balance;
     private boolean isDead = false;
     private boolean isFlipped = false;
+    //Stats in order: awakeness fitness sanity self-esteem Illness
     private int[] stats;
-    private double[] statsInfluence, cardWeights;
-    private ArrayList<Card> hand = new ArrayList<>();
+    //play types in order: Aggressive,clearout,lowest,pileCheck
+    private double[] statsInfluence, playWeights;
+    private ArrayList<Integer> hand = new ArrayList<>();
     private Cannon cannon;
-    //awakeness fitness sanity self-esteem Illness
 
-    public void addCard(Card c) {
+    public void addCard(int c) {
         hand.add(c);
     }
 
-    public GameCharacter(String n, double[] sI, double[] aiWeights) {
-        cardWeights = aiWeights;
+    public GameCharacter(String n, double[] sI, double[] a) {
+        playWeights = a;
         name = n;
         statsInfluence = sI;
         stats = new int[]{100, 100, 100, 100, 100};
@@ -39,17 +42,17 @@ public class GameCharacter {
         label = new JLabel();
     }
 
-    public GameCharacter(String n, int h, double[] sI, double[] aiWeights) {
-        this(n, sI, aiWeights);
+    public GameCharacter(String n, int h, double[] sI, double[] playWeights) {
+        this(n, sI, playWeights);
         heightShort = h;
     }
-    public GameCharacter(String n, int h, double[] sI, double[] aiWeights,Cannon c) {
-        this(n, sI, aiWeights);
+    public GameCharacter(String n, int h, double[] sI, double[] playWeights, Cannon c) {
+        this(n, sI, playWeights);
         heightShort = h;
         cannon=c;
     }
-    public GameCharacter(String n, double[] sI, double[] aiWeights,Cannon c) {
-        this(n,0, sI, aiWeights,c);
+    public GameCharacter(String n, double[] sI, double[] playWeights, Cannon c) {
+        this(n,0, sI, playWeights,c);
     }
 
     public void reset() {
@@ -59,8 +62,92 @@ public class GameCharacter {
         isDead = false;
     }
 
-    public void choseCard(Card topCard) {
+    public int choseCard(Stack<Integer> discard) {
+        int topCard = CardGame.getTopDiscard();
+        Collections.sort(hand);
+        int plan = Main.randomWithWeights(playWeights);
+        switch (plan) {
+            case 0: {
+                if(CardGame.getPileValue(discard)<=-6 && hand.contains(3)) {
+                    return 3;
+                }
+                if(CardGame.isPlayable(hand.get(hand.size()-1), topCard)) {
+                    return hand.get(hand.size()-1);
+                } else if (hand.contains(2)){
+                    return 2;
+                }else if (hand.contains(10)) {
+                    return 10;
+                }else if (hand.contains(3)) {
+                    return 3;
+                }
+                return -1;
 
+            }
+
+            case 2: {
+                if(hand.contains(2)) {
+                    hand.remove(hand.indexOf(2));
+                    hand.add(2);
+                }
+                if(hand.contains(10)) {
+                    hand.remove(hand.indexOf(10));
+                    hand.add(10);
+                }
+                if(hand.contains(3)) {
+                    hand.remove(hand.indexOf(3));
+                    hand.add(3);
+                }
+                for (int i = 0; i < hand.size(); i++) {
+                    if(CardGame.isPlayable(hand.get(i), topCard)) {
+                        return hand.get(i);
+                    }
+                }
+            }
+            default: {
+                if(CardGame.getPileValue(discard)>0 && plan!=1) {
+                    if(Main.random(CardGame.getPileValue(discard),10)>9) {
+                        return -1;
+                    }
+                }
+                if(hand.contains(2)) {
+                    hand.remove(hand.indexOf(2));
+                    hand.add(2);
+                }
+                if(hand.contains(10)) {
+                    hand.remove(hand.indexOf(10));
+                    hand.add(10);
+                }
+                if(hand.contains(3)) {
+                    hand.remove(hand.indexOf(3));
+                    hand.add(3);
+                }
+                int i ,maxcount=0, res=0;
+                for (i = 0; !CardGame.isPlayable(hand.get(i), topCard); i++);
+                for (; i < hand.size(); i++) {
+                    int count = 0;
+                    for (int j = 0; j < hand.size(); j++) {
+                        if (hand.get(0) == hand.get(i))
+                            count++;
+                    }
+                    if (count > maxcount || (count == maxcount && hand.get(i) > res)) {
+                        maxcount = count;
+                        res = hand.get(i);
+                    }
+                }
+                return res;
+
+                }
+
+
+        }
+    }
+    public boolean three(Stack<Integer> discard) {
+        boolean three = hand.contains(3);
+        if(three) {
+            int value = CardGame.getPileValue(discard);
+            three = Main.random(value-5,value)<0;
+        }
+        return three;
     }
 
     public Cannon getCannon() {
@@ -158,32 +245,17 @@ public class GameCharacter {
         return Main.cropImageIcon(getExpression(expression), bestX, height, width, width);
     }
 
-    public Card getChosenCard(Card topCard) {
-        ArrayList<Card> tempHand = (ArrayList<Card>) hand.clone();
-        for (int i = 0; i < tempHand.size(); i++) {
-            if (!Card.isValidCombo(tempHand.get(i), topCard)) {
-                tempHand.remove(i);
-                i--;
-            }
-        }
-        double[] weightsArr = new double[tempHand.size()];
-        for (int i = 0; i < tempHand.size(); i++) {
-            weightsArr[i] = (cardWeights[tempHand.get(i).getNumber()]);
-        }
-        return tempHand.get(Main.randomWithWeights(weightsArr));
 
-    }
-
-    public boolean hasValidCard(Card topCard) {
+    public boolean hasValidCard(int topCard) {
         for (int i = 0; i < hand.size(); i++) {
-            if (Card.isValidCombo(hand.get(i), topCard)) {
+            if (CardGame.isPlayable(hand.get(i), topCard)) {
                 return true;
             }
         }
         return false;
     }
 
-    public void playCard(Card card) {
+    public void playCard(int card) {
         hand.remove(card);
     }
 
@@ -204,7 +276,7 @@ public class GameCharacter {
         isFlipped = flipped;
     }
 
-    public ArrayList<Card> getHand() {
+    public ArrayList<Integer> getHand() {
         return hand;
     }
 

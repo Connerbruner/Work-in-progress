@@ -1,7 +1,5 @@
 package org.example;
 
-import org.example.Cards.Card;
-import org.example.Cards.UnoGame;
 import org.example.Timeline.Event;
 
 import java.util.ArrayList;
@@ -31,7 +29,7 @@ public class PlayableCharacter extends GameCharacter {
 
 
     public PlayableCharacter(String n, double[] s, Job j, int h, double[] aiWeights) {
-        super(n, h,s, aiWeights);
+        super(n, h,s,aiWeights);
         job = j;
         isPlayable=true;
     }
@@ -53,11 +51,6 @@ public class PlayableCharacter extends GameCharacter {
     public void reset() {
         super.reset();
         eventsToCheck = staringEvents;
-    }
-
-    @Override
-    public void choseCard(Card topCard) {
-
     }
 
     public void runJob() {

@@ -1,6 +1,6 @@
 package org.example.Timeline;
 
-import org.example.Cards.UnoGame;
+import org.example.Cards.CardGame;
 import org.example.GameCharacter;
 import org.example.Job;
 import org.example.PlayableCharacter;
@@ -12,14 +12,14 @@ public class Game {
     public static final double[] TEST_VALUES = {0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5
                                                 , 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5};
     static final Job[] JOBS = {
-            new Job("Getting up", new UnoGame(), 0, 0, 5, 0),
-            new Job("Fish market", new UnoGame(), 130, 0, 7, 0),
+            new Job("Getting up",  0, 0, 5, 0),
+            new Job("Fish market", 130, 0, 7, 0),
     };
 
 
     public static final PlayableCharacter[] PLAYABLE_GAME_CHARACTERS = {
-            new PlayableCharacter("Carina",  new double[]{1, 1, 1.5, 0.5, 1}, JOBS[1], 35, TEST_VALUES),
-            new PlayableCharacter("Orion", new double[]{1, 1.5, 0.5, 0.5, 1}, JOBS[0], TEST_VALUES)
+            new PlayableCharacter("Carina",  new double[]{0.5, 0.5, 0.5, 0.5}, JOBS[1], 35, TEST_VALUES),
+            new PlayableCharacter("Orion", new double[]{0.5, 0.5, 0.5, 0.5}, JOBS[0], TEST_VALUES)
     };
     public static final GameCharacter[] ALL_GAME_CHARACTERS = {
             PLAYABLE_GAME_CHARACTERS[0],
